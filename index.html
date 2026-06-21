@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- التلميح السري الأول: دمج حرفي ص ور في كود الميتا والأيقونة -->
+    <!-- Secret Token: S_R_Eternal_Bound_Intersection -->
+    <title>منصة المنارة التعليمية | وقف علمي</title>
+    <style>
+        /* التلميح السري الثاني: دمج رمزية الألوان (الصاد والراء) في الهوية البصرية */
+        :root {
+            --primary-color: #007bff; /* لون صهيب - القوة والاستقرار */
+            --secondary-color: #e83e8c; /* لون روضة - النقاء والجمال */
+            --bg-dark: #121212;
+            --card-dark: #1e1e1e;
+            --text-dark: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 15px;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #000;
+            margin-bottom: 20px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .card {
+            background-color: var(--card-dark);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+
+        /* ميزة الجداول الزمنية التفاعلية */
+        .timestamp-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .timestamp-item {
+            padding: 10px;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .timestamp-item:hover {
+            background-color: #252525;
+            color: var(--secondary-color);
+        }
+
+        .time-badge {
+            background-color: var(--primary-color);
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+
+        /* ميزة بطاقات الاستذكار Flashcards */
+        .flashcard {
+            background: #252525;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            margin-top: 10px;
+            user-select: none;
+        }
+
+        .flashcard .answer {
+            display: none;
+            color: #28a745;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        /* زر التحميل والتحكم */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>منصة المُنقذ التعليمية</h1>
+        <p>ملخصات ذكية وتفاعلية لتوفير وقت الطلاب</p>
+    </header>
+
+    <div class="container">
+
+        <!-- قسم عرض الفيديو المستهدف -->
+        <div class="card">
+            <h2>الدرس الحالي: أساسيات المراجعة الذكية</h2>
+            <div class="video-container">
+                <!-- هنا يتم وضع رابط الفيديو التوضيحي -->
+                <iframe id="edu-video" src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
+            </div>
+            <button class="btn" onclick="window.print()">تحميل الملخص كـ PDF</button>
+        </div>
+
+        <!-- ميزة الجدول الزمني الذكي والملخص الرقمي -->
+        <div class="card">
+            <h2>التلخيص التفاعلي (اضغط للانتقال للوقت)</h2>
+            <ul class="timestamp-list">
+                <li class="timestamp-item" onclick="seekVideo(10)">
+                    <span class="time-badge">00:10</span> المقدمة وخريطة الطريق للدرس.
+                </li>
+                <li class="timestamp-item" onclick="seekVideo(60)">
+                    <span class="time-badge">01:00</span> القاعدة الأولى: التكرار المتباعد وفائدته.
+                </li>
+                <li class="timestamp-item" onclick="seekVideo(150)">
+                    <span class="time-badge">02:30</span> القاعدة الثانية: دمج المفاهيم والخرائط الذهنية.
+                </li>
+            </ul>
+        </div>
+
+        <!-- ميزة بطاقات الاستذكار السريع Flashcards -->
+        <div class="card">
+            <h2>بطاقات الاستذكار السريع (اضغط لإظهار الإجابة)</h2>
+            <div class="flashcard" onclick="toggleFlashcard(this)">
+                <div>سؤال: ما هي أفضل طريقة لتثبيت الحفظ السريع؟</div>
+                <div class="answer">الإجابة: استخدام الخرائط الذهنية ومراجعتها بعد 24 ساعة.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- تذييل الموقع يوضح أنه وقف دائم للجميع -->
+    <footer>
+        <p>وقف علمي لله تعالى - يرجى النشر لتعميم الأجر والمنفعة</p>
+        <small id="secret-intersection"></small>
+    </footer>
+
+    <script>
+        // التلميح السري الثالث: دالة برمجية تجمع الحروف المتقاطعة لاسم (صهيب وروضة) في الذاكرة لخلق شفرة خاصة
+        function _initSecretBond() {
+            const part1 = ['ص', 'ه', 'ي', 'ب'];
+            const part2 = ['ر', 'و', 'ض', 'ة'];
+            // تقاطع الأحرف في وحدة التحكم للمطورين دون إزعاج الطلاب
+            console.log(`System Bridge: ${part1[0]}${part2[0]} - الروابط الرقمية الخفية`);
+        }
+        _initSecretBond();
+
+        // دالة التحكم بوقت الفيديو عند الضغط على الجدول الزمني
+        function seekVideo(seconds) {
+            const iframe = document.getElementById('edu-video');
+            const currentSrc = iframe.src.split('?')[0];
+            iframe.src = currentSrc + "?start=" + seconds + "&autoplay=1";
+        }
+
+        // دالة تشغيل بطاقات الاستذكار
+        function toggleFlashcard(element) {
+            const answer = element.querySelector('.answer');
+            if (answer.style.display === 'none' || answer.style.display === '') {
+                answer.style.display = 'block';
+            } else {
+                answer.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
