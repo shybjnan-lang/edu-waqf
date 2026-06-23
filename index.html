@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مساعد البكالوريا - دليلك الذكي للنجاح</title>
+    <title>مساعد البكالوريا - تلخيص فيديوهات يوتيوب</title>
     
-    <!-- مكتبات خارجية -->
+    <!-- مكتبات -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -22,9 +21,6 @@
                         accent: '#f59e0b',
                         dark: '#0f172a',
                         light: '#f8fafc'
-                    },
-                    fontFamily: {
-                        sans: ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'],
                     }
                 }
             }
@@ -34,11 +30,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap');
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -48,13 +40,10 @@
             overflow-x: hidden;
         }
         
-        /* تأثيرات الخلفية المتحركة */
         .bg-particles {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
@@ -62,8 +51,7 @@
         
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
+            width: 4px; height: 4px;
             background: rgba(59, 130, 246, 0.3);
             border-radius: 50%;
             animation: float 15s infinite;
@@ -76,7 +64,6 @@
             100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
         }
         
-        /* Glassmorphism */
         .glass {
             background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(12px);
@@ -97,7 +84,6 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
         
-        /* زر التلخيص */
         .summarize-btn {
             background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
             position: relative;
@@ -107,22 +93,16 @@
         .summarize-btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
             transition: left 0.5s;
         }
         
-        .summarize-btn:hover::before {
-            left: 100%;
-        }
+        .summarize-btn:hover::before { left: 100%; }
         
-        /* شريط التحميل */
         .loader {
-            width: 48px;
-            height: 48px;
+            width: 48px; height: 48px;
             border: 5px solid #3b82f6;
             border-bottom-color: transparent;
             border-radius: 50%;
@@ -134,7 +114,6 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* مخطط ذهني */
         .mind-map-node {
             background: rgba(59, 130, 246, 0.2);
             border: 2px solid #3b82f6;
@@ -143,7 +122,6 @@
             margin: 8px;
             cursor: pointer;
             transition: all 0.3s;
-            position: relative;
         }
         
         .mind-map-node:hover {
@@ -151,22 +129,6 @@
             transform: scale(1.05);
         }
         
-        .mind-map-line {
-            position: absolute;
-            background: #3b82f6;
-            transform-origin: left center;
-        }
-        
-        /* أزرار التنسيق */
-        .format-btn {
-            @apply px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition text-sm;
-        }
-        
-        .format-btn.active {
-            @apply bg-blue-600 text-white;
-        }
-        
-        /* التبويبات */
         .tab-btn {
             @apply px-6 py-3 rounded-t-lg font-semibold transition-all duration-300;
         }
@@ -179,7 +141,6 @@
             @apply bg-slate-700 text-slate-300 hover:bg-slate-600;
         }
         
-        /* شريط التمرير المخصص */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -193,17 +154,11 @@
             border-radius: 4px;
         }
         
-        ::-webkit-scrollbar-thumb:hover {
-            background: #2563eb;
-        }
-        
-        /* صفحة البكالوريا */
         .bac-card {
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(30, 64, 175, 0.1) 100%);
             border: 1px solid rgba(59, 130, 246, 0.3);
         }
         
-        /* Easter Egg - أسماء مخفية */
         .hidden-trigger {
             opacity: 0;
             position: absolute;
@@ -221,7 +176,6 @@
             cursor: default;
         }
         
-        /* صدقة جارية */
         .sadaqa-banner {
             background: linear-gradient(90deg, #059669 0%, #10b981 100%);
             position: relative;
@@ -231,10 +185,8 @@
         .sadaqa-banner::after {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
             background-size: 20px 20px;
             animation: moveGrid 20s linear infinite;
@@ -245,24 +197,31 @@
             100% { transform: translate(20px, 20px); }
         }
         
-        /* تأثير الكتابة */
-        .typing-effect {
+        .transcript-line {
+            padding: 8px 12px;
+            margin: 4px 0;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 8px;
             border-right: 3px solid #3b82f6;
-            animation: blink 0.8s infinite;
+            transition: all 0.2s;
         }
         
-        @keyframes blink {
-            50% { border-color: transparent; }
+        .transcript-line:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateX(-5px);
         }
         
-        /* Responsive */
+        .timestamp {
+            color: #f59e0b;
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin-left: 8px;
+        }
+        
         @media (max-width: 768px) {
-            .glass-card {
-                margin: 0.5rem;
-            }
+            .glass-card { margin: 0.5rem; }
         }
         
-        /* Print styles */
         @media print {
             .no-print { display: none !important; }
             body { background: white; color: black; }
@@ -299,9 +258,6 @@
                 </div>
                 
                 <div class="flex items-center gap-3">
-                    <button onclick="toggleTheme()" class="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">
-                        <i class="fas fa-moon text-yellow-400"></i>
-                    </button>
                     <button onclick="showAbout()" class="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">
                         <i class="fas fa-info-circle text-blue-400"></i>
                     </button>
@@ -313,7 +269,7 @@
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8 relative z-10">
         
-        <!-- Tabs Navigation -->
+        <!-- Tabs -->
         <div class="flex flex-wrap justify-center gap-2 mb-8">
             <button onclick="switchTab('youtube')" class="tab-btn active" id="tab-youtube">
                 <i class="fab fa-youtube mr-2"></i>تلخيص يوتيوب
@@ -335,7 +291,7 @@
         <!-- Tab: YouTube Summarizer -->
         <div id="content-youtube" class="tab-content">
             <div class="max-w-4xl mx-auto">
-                <!-- Input Section -->
+                <!-- Input -->
                 <div class="glass-card rounded-2xl p-6 mb-6">
                     <h2 class="text-xl font-bold mb-4 text-blue-400">
                         <i class="fab fa-youtube mr-2 text-red-500"></i>
@@ -372,13 +328,21 @@
                         </button>
                     </div>
                     
+                    <!-- Proxy Warning -->
+                    <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 mb-4">
+                        <p class="text-yellow-400 text-sm">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            <strong>ملاحظة مهمة:</strong> يستخدم الموقع CORS Proxy مجاني للوصول لنصوص يوتيوب. إذا فشل الاستخراج، جرب فيديو آخر أو استخدم الطريقة اليدوية (انظر الأسئلة الشائعة).
+                        </p>
+                    </div>
+                    
                     <!-- Progress -->
                     <div id="progressSection" class="hidden">
                         <div class="flex items-center gap-4 mb-2">
                             <div class="loader"></div>
                             <div>
-                                <p class="font-semibold text-blue-400" id="progressText">جاري استخراج النص...</p>
-                                <p class="text-sm text-slate-400" id="progressSub">قد يستغرق الأمر بضع ثوانٍ</p>
+                                <p class="font-semibold text-blue-400" id="progressText">جاري الاتصال...</p>
+                                <p class="text-sm text-slate-400" id="progressSub">جاري استخراج النص من يوتيوب</p>
                             </div>
                         </div>
                         <div class="w-full bg-slate-700 rounded-full h-2">
@@ -387,14 +351,14 @@
                     </div>
                 </div>
 
-                <!-- Results Section -->
+                <!-- Results -->
                 <div id="resultsSection" class="hidden">
                     <div class="glass-card rounded-2xl p-6 mb-6">
                         <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
                             <h3 class="text-lg font-bold text-blue-400">
                                 <i class="fas fa-file-alt mr-2"></i>النتيجة
                             </h3>
-                            <div class="flex gap-2">
+                            <div class="flex gap-2 flex-wrap">
                                 <button onclick="copyResult()" class="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition text-sm">
                                     <i class="fas fa-copy mr-1"></i>نسخ
                                 </button>
@@ -423,6 +387,14 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Original Transcript -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-green-400 mb-4">
+                            <i class="fas fa-closed-captioning mr-2"></i>النص الأصلي مع التوقيت
+                        </h3>
+                        <div id="transcriptContainer" class="max-h-[400px] overflow-y-auto space-y-1"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -438,7 +410,7 @@
                     
                     <div class="flex flex-col md:flex-row gap-4 mb-4">
                         <textarea id="mindMapInput" rows="3" 
-                            placeholder="أدخل النص لتحويله إلى مخطط ذهني (مثال: الموضوع: الفيزياء&#10;الفرع الأول: الميكانيك&#10;الفرع الثاني: الكهرباء)" 
+                            placeholder="أدخل النص لتحويله إلى مخطط ذهني..." 
                             class="flex-1 px-4 py-3 rounded-xl bg-slate-800 border border-slate-600 focus:border-purple-500 focus:outline-none text-white placeholder-slate-500 resize-none"></textarea>
                         <div class="flex flex-col gap-2">
                             <button onclick="generateMindMap()" class="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold transition">
@@ -475,7 +447,6 @@
                 </h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                    <!-- Science -->
                     <div class="bac-card rounded-2xl p-6 cursor-pointer hover:scale-105 transition" onclick="showBacSubject('science')">
                         <div class="w-14 h-14 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4">
                             <i class="fas fa-flask text-blue-400 text-2xl"></i>
@@ -484,7 +455,6 @@
                         <p class="text-slate-400 text-sm">رياضيات، فيزياء، علوم طبيعية</p>
                     </div>
                     
-                    <!-- Literature -->
                     <div class="bac-card rounded-2xl p-6 cursor-pointer hover:scale-105 transition" onclick="showBacSubject('literature')">
                         <div class="w-14 h-14 bg-pink-500/20 rounded-xl flex items-center justify-center mb-4">
                             <i class="fas fa-book-open text-pink-400 text-2xl"></i>
@@ -493,7 +463,6 @@
                         <p class="text-slate-400 text-sm">فلسفة، تاريخ، جغرافيا، لغات</p>
                     </div>
                     
-                    <!-- Tech -->
                     <div class="bac-card rounded-2xl p-6 cursor-pointer hover:scale-105 transition" onclick="showBacSubject('tech')">
                         <div class="w-14 h-14 bg-green-500/20 rounded-xl flex items-center justify-center mb-4">
                             <i class="fas fa-laptop-code text-green-400 text-2xl"></i>
@@ -502,7 +471,6 @@
                         <p class="text-slate-400 text-sm">تكنولوجيا، هندسة، رياضيات تطبيقية</p>
                     </div>
                     
-                    <!-- Management -->
                     <div class="bac-card rounded-2xl p-6 cursor-pointer hover:scale-105 transition" onclick="showBacSubject('management')">
                         <div class="w-14 h-14 bg-yellow-500/20 rounded-xl flex items-center justify-center mb-4">
                             <i class="fas fa-chart-line text-yellow-400 text-2xl"></i>
@@ -511,7 +479,6 @@
                         <p class="text-slate-400 text-sm">اقتصاد، محاسبة، قانون تجاري</p>
                     </div>
                     
-                    <!-- Languages -->
                     <div class="bac-card rounded-2xl p-6 cursor-pointer hover:scale-105 transition" onclick="showBacSubject('languages')">
                         <div class="w-14 h-14 bg-purple-500/20 rounded-xl flex items-center justify-center mb-4">
                             <i class="fas fa-language text-purple-400 text-2xl"></i>
@@ -520,7 +487,6 @@
                         <p class="text-slate-400 text-sm">إنجليزية، فرنسية، إسبانية، ألمانية</p>
                     </div>
                     
-                    <!-- Islamic -->
                     <div class="bac-card rounded-2xl p-6 cursor-pointer hover:scale-105 transition" onclick="showBacSubject('islamic')">
                         <div class="w-14 h-14 bg-emerald-500/20 rounded-xl flex items-center justify-center mb-4">
                             <i class="fas fa-mosque text-emerald-400 text-2xl"></i>
@@ -530,7 +496,6 @@
                     </div>
                 </div>
                 
-                <!-- Bac Content Display -->
                 <div id="bacContent" class="hidden">
                     <div class="glass-card rounded-2xl p-6">
                         <div class="flex justify-between items-center mb-4">
@@ -600,7 +565,7 @@
                         </div>
                     </div>
                     
-                    <!-- Note Taking -->
+                    <!-- Notes -->
                     <div class="glass-card rounded-2xl p-6 md:col-span-2">
                         <h3 class="text-lg font-bold mb-4 text-green-400">
                             <i class="fas fa-sticky-note mr-2"></i>ملاحظات سريعة
@@ -728,10 +693,10 @@
         </div>
     </footer>
 
-    <!-- Konami Code Easter Egg -->
+    <!-- Konami Code -->
     <div class="konami-code" id="konami">↑↑↓↓←→←→BA</div>
 
-    <!-- Hidden Names Easter Egg Modal -->
+    <!-- Easter Egg Modal -->
     <div id="easterEggModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
         <div class="glass-card rounded-2xl p-8 max-w-md w-full text-center border-2 border-yellow-500/50">
             <i class="fas fa-star text-yellow-400 text-5xl mb-4 animate-pulse"></i>
@@ -765,9 +730,9 @@
                 </ul>
                 <div class="bg-blue-500/10 rounded-lg p-4 mt-4 border border-blue-500/30">
                     <p class="font-bold text-blue-400 mb-2">💡 كيفية الاستخدام:</p>
-                    <p>انسخ رابط أي فيديو يوتيوب educational والصقه في حقل الإدخال، ثم اختر نوع التلخيص المطلوب واضغط "استخراج النص".</p>
+                    <p>انسخ رابط أي فيديو يوتيوب educational والصقه في حقل الإدخال. يستخدم الموقع CORS Proxy مجاني للوصول للنصوص.</p>
+                    <p class="mt-2 text-yellow-400">⚠️ إذا فشل الاستخراج، يمكنك نسخ النص يدوياً من يوتيوب (ثلاث نقاط → Show transcript) ولصقه في "مخطط ذهني" للتلخيص.</p>
                 </div>
-                <p class="text-xs text-slate-500 mt-4 text-center">الموقع يعمل بالكامل على المتصفح دون الحاجة لخادم</p>
             </div>
             <button onclick="closeAbout()" class="mt-6 w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-bold transition">
                 فهمت
@@ -786,15 +751,14 @@
         let konamiCode = [];
         const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
         
-        // ==================== تهيئة الصفحة ====================
+        // ==================== تهيئة ====================
         document.addEventListener('DOMContentLoaded', () => {
             createParticles();
             loadHistory();
             loadNotes();
             updateConverter();
-            initIndexedDB();
             
-            // Easter Egg: Konami Code
+            // Konami Code
             document.addEventListener('keydown', (e) => {
                 konamiCode.push(e.key);
                 if (konamiCode.length > 10) konamiCode.shift();
@@ -803,7 +767,7 @@
                 }
             });
             
-            // Easter Egg: Click on hidden dot in sadaqa banner 5 times
+            // Hidden dot click
             let sadaqaClicks = 0;
             document.querySelector('[data-s="1"]').addEventListener('click', () => {
                 sadaqaClicks++;
@@ -814,24 +778,7 @@
             });
         });
         
-        // ==================== IndexedDB ====================
-        let db;
-        function initIndexedDB() {
-            const request = indexedDB.open('BacHelperDB', 1);
-            request.onerror = () => console.log('IndexedDB error');
-            request.onsuccess = (e) => { db = e.target.result; };
-            request.onupgradeneeded = (e) => {
-                const db = e.target.result;
-                if (!db.objectStoreNames.contains('summaries')) {
-                    db.createObjectStore('summaries', { keyPath: 'id', autoIncrement: true });
-                }
-                if (!db.objectStoreNames.contains('notes')) {
-                    db.createObjectStore('notes', { keyPath: 'id', autoIncrement: true });
-                }
-            };
-        }
-        
-        // ==================== تأثيرات الخلفية ====================
+        // ==================== تأثيرات ====================
         function createParticles() {
             const container = document.getElementById('particles');
             for (let i = 0; i < 30; i++) {
@@ -848,12 +795,11 @@
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
             document.getElementById('content-' + tabName).classList.remove('hidden');
             document.getElementById('tab-' + tabName).classList.add('active');
         }
         
-        // ==================== استخراج نص يوتيوب ====================
+        // ==================== استخراج نص يوتيوب - الطريقة الحقيقية ====================
         async function extractTranscript() {
             const url = document.getElementById('youtubeUrl').value.trim();
             if (!url) {
@@ -867,111 +813,164 @@
                 return;
             }
             
-            // Show progress
             document.getElementById('progressSection').classList.remove('hidden');
             document.getElementById('resultsSection').classList.add('hidden');
-            updateProgress(10, 'جاري الاتصال بيوتيوب...');
+            updateProgress(10, 'جاري جلب معلومات الفيديو...');
             
             try {
-                // Method 1: Try using YouTube's timedtext API (no CORS proxy needed for some)
-                updateProgress(30, 'جاري استخراج النص...');
+                // الطريقة 1: استخدام CORS Proxy مجاني
+                const proxyUrls = [
+                    'https://api.allorigins.win/raw?url=',
+                    'https://corsproxy.io/?',
+                    'https://api.codetabs.com/v1/proxy?quest='
+                ];
                 
-                let transcript = '';
-                let title = 'فيديو يوتيوب';
-                let duration = '';
+                let pageHtml = null;
+                let usedProxy = '';
                 
-                // Try multiple methods
-                try {
-                    // Get video info first
-                    const infoResponse = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
-                    if (infoResponse.ok) {
-                        const info = await infoResponse.json();
-                        title = info.title;
+                // جرب كل بروكسي حتى ينجح أحدهم
+                for (const proxy of proxyUrls) {
+                    try {
+                        updateProgress(20 + Math.random() * 10, `جاري الاتصال عبر البروكسي...`);
+                        const response = await fetch(proxy + encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`), {
+                            method: 'GET',
+                            headers: { 'Accept': 'text/html' }
+                        });
+                        
+                        if (response.ok) {
+                            pageHtml = await response.text();
+                            usedProxy = proxy;
+                            break;
+                        }
+                    } catch (e) {
+                        console.log('Proxy failed:', proxy, e.message);
+                        continue;
                     }
-                } catch (e) {}
+                }
                 
-                updateProgress(50, 'جاري تحليل النص...');
+                if (!pageHtml) {
+                    throw new Error('جميع البروكسيات فشلت. جرب فيديو آخر أو استخدم الطريقة اليدوية.');
+                }
                 
-                // Try to get transcript via timedtext
-                try {
-                    const transcriptResponse = await fetch(`https://video.google.com/timedtext?type=list&v=${videoId}`);
-                    // This might fail due to CORS, so we have fallback
-                } catch (e) {}
+                updateProgress(50, 'جاري استخراج النصوص...');
                 
-                // Fallback: Use a free transcript API service
-                updateProgress(70, 'جاري معالجة البيانات...');
+                // استخراج ytInitialPlayerResponse من الصفحة
+                let playerResponse = null;
                 
-                // Since we can't directly access YouTube transcripts due to CORS,
-                // we'll use a demo mode with realistic simulation
-                // In production, you'd use a backend proxy or CORS-enabled API
+                // Method 1: Find ytInitialPlayerResponse
+                const playerMatch = pageHtml.match(/ytInitialPlayerResponse\s*=\s*({.+?});/);
+                if (playerMatch) {
+                    try {
+                        playerResponse = JSON.parse(playerMatch[1]);
+                    } catch (e) {
+                        console.log('Parse error, trying alternative...');
+                    }
+                }
                 
-                await new Promise(r => setTimeout(r, 1500));
+                // Method 2: Find in script tags
+                if (!playerResponse) {
+                    const scripts = pageHtml.match(/<script[^>]*>([\s\S]*?)<\/script>/g) || [];
+                    for (const script of scripts) {
+                        const match = script.match(/ytInitialPlayerResponse\s*=\s*({.+?});/);
+                        if (match) {
+                            try {
+                                playerResponse = JSON.parse(match[1]);
+                                break;
+                            } catch (e) {}
+                        }
+                    }
+                }
                 
-                // Generate realistic demo transcript based on video ID
-                transcript = generateDemoTranscript(videoId, title);
+                if (!playerResponse) {
+                    throw new Error('لم يتم العثور على بيانات الفيديو. قد يكون الفيديو خاصاً أو محظوراً.');
+                }
                 
-                updateProgress(100, 'اكتمل!');
+                // استخراج معلومات الفيديو
+                const videoDetails = playerResponse.videoDetails || {};
+                const title = videoDetails.title || 'فيديو يوتيوب';
+                const duration = formatDuration(videoDetails.lengthSeconds || 0);
                 
-                currentTranscript = transcript;
-                currentVideoInfo = { id: videoId, title, duration: '10:25', thumbnail: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` };
+                currentVideoInfo = {
+                    id: videoId,
+                    title,
+                    duration,
+                    thumbnail: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`
+                };
                 
-                // Generate summary based on type
+                // استخراج الترجمات
+                const captions = playerResponse.captions;
+                if (!captions || !captions.playerCaptionsTracklistRenderer || !captions.playerCaptionsTracklistRenderer.captionTracks) {
+                    throw new Error('هذا الفيديو لا يحتوي على ترجمات متاحة. جرب فيديو آخر.');
+                }
+                
+                const captionTracks = captions.playerCaptionsTracklistRenderer.captionTracks;
+                const lang = document.getElementById('language').value;
+                
+                // اختر أفضل ترجمة
+                let selectedTrack = captionTracks.find(t => t.vssId === `.${lang}`) ||
+                                   captionTracks.find(t => t.vssId === `a.${lang}`) ||
+                                   captionTracks.find(t => t.languageCode === lang) ||
+                                   captionTracks[0];
+                
+                updateProgress(70, 'جاري تحميل النص الكامل...');
+                
+                // جلب النص من رابط الترجمة
+                const captionUrl = selectedTrack.baseUrl + '&fmt=json3';
+                const captionProxyUrl = usedProxy + encodeURIComponent(captionUrl);
+                
+                const captionResponse = await fetch(captionProxyUrl);
+                if (!captionResponse.ok) {
+                    throw new Error('فشل في تحميل النص. جرب فيديو آخر.');
+                }
+                
+                const captionData = await captionResponse.json();
+                
+                if (!captionData.events || captionData.events.length === 0) {
+                    throw new Error('الترجمة فارغة.');
+                }
+                
+                // معالجة النص
+                let fullText = '';
+                const transcriptLines = [];
+                
+                captionData.events.forEach(event => {
+                    if (event.segs) {
+                        const text = event.segs.map(seg => seg.utf8 || '').join(' ')
+                            .replace(/\n/g, ' ')
+                            .replace(/♪|'|"|\.{2,}|\<[\s\S]*?\>|\{[\s\S]*?\}|\[[\s\S]*?\]/g, '')
+                            .trim();
+                        
+                        if (text) {
+                            const startTime = formatTime(event.tStartMs / 1000);
+                            fullText += text + ' ';
+                            transcriptLines.push({ time: startTime, text });
+                        }
+                    }
+                });
+                
+                currentTranscript = fullText.trim();
+                
+                updateProgress(90, 'جاري تلخيص النص...');
+                
+                // توليد التلخيص
                 const summaryType = document.getElementById('summaryType').value;
-                const summary = generateSummary(transcript, summaryType);
+                const summary = generateSummary(currentTranscript, summaryType);
                 
+                // عرض النتائج
                 displayResult(summary);
+                displayTranscript(transcriptLines);
+                
+                // حفظ في السجل
                 saveToHistory(summary, title, videoId);
                 
-                document.getElementById('progressSection').classList.add('hidden');
-                document.getElementById('resultsSection').classList.remove('hidden');
+                updateProgress(100, 'اكتمل!');
+                setTimeout(() => {
+                    document.getElementById('progressSection').classList.add('hidden');
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                }, 500);
                 
             } catch (error) {
                 console.error(error);
-                alert('حدث خطأ. تأكد من أن الفيديو يحتوي على ترجمة أو نص.');
                 document.getElementById('progressSection').classList.add('hidden');
-            }
-        }
-        
-        function extractVideoId(url) {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : null;
-        }
-        
-        function updateProgress(percent, text) {
-            document.getElementById('progressBar').style.width = percent + '%';
-            document.getElementById('progressText').textContent = text;
-        }
-        
-        function generateDemoTranscript(videoId, title) {
-            // Generate a realistic educational transcript based on hash of videoId
-            const topics = [
-                'الفيزياء: القوانين الأساسية في الحركة والسرعة والتسارع. نيوتن وقوانينه الثلاثة. الجاذبية الأرضية والقوة الكهربائية.',
-                'الرياضيات: الدوال العددية، النهايات، الاشتقاق، التكامل، المتتاليات العددية، الإحصاء والاحتمالات.',
-                'التاريخ: الجزائر في العهد العثماني، المقاومة الشعبية، الثورة التحريرية، الاستقلال وبناء الدولة.',
-                'الفلسفة: مفهوم الحرية، العقل والوجود، الإنسان والطبيعة، السلطة والدولة، الأخلاق والمجتمع.',
-                'العلوم الطبيعية: الخلية والأنسجة، التمثيل الغذائي، الإنجاب، الوراثة، النظام البيئي، التطور.'
-            ];
-            
-            const hash = videoId.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-            const topic = topics[hash % topics.length];
-            
-            return `${title}\n\n${topic}\n\nفي هذا الدرس سنتحدث عن المفاهيم الأساسية والقوانين المهمة. يجب على الطالب فهم الأساسيات قبل التعمق في التفاصيل. التمارين العملية ضرورية لترسيخ الفهم. المراجعة المستمرة هي مفتاح النجاح في البكالوريا.`;
-        }
-        
-        function generateSummary(transcript, type) {
-            const lines = transcript.split('\n').filter(l => l.trim());
-            const mainText = lines.slice(1).join(' ');
-            
-            switch(type) {
-                case 'brief':
-                    return `📌 ملخص مختصر:\n\n${mainText.substring(0, 300)}...\n\n✓ النقاط الرئيسية تم شرحها بإيجاز`;
-                    
-                case 'bullet':
-                    return `📋 النقاط الرئيسية:\n\n• ${mainText.split('،').slice(0, 5).join('\n• ')}\n\n✓ ركز على هذه النقاط في مراجعتك`;
-                    
-                case 'explain':
-                    return `📖 شرح مبسط:\n\n${mainText}\n\n💡 شرح مبسط: هذا الموضوع يتطلب فهم العلاقات بين المفاهيم الأساسية. ابدأ بالتعريفات ثم انتقل للتطبيقات.`;
-                    
-                case 'study':
-                    return `🎓 ملخص دراسي للبكالوريا:\n\n📌 التعريف: ${lines[1] || ''}\n\n🔑 القوانين الأساسية:\n• ${mainText.split('،').slice(0, 3).join('\n• ')}\n\n⚠️ نصائح للامتحان:\n- اقرأ السؤال جيداً\n- حدد المعطيات والمطلوب\n- اكتب القانون المناسب\n- عوض بالقيم\n- تأكد من الوحدة`
+                
+                // عرض رسالة خطأ مفص
