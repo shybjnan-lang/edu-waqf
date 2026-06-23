@@ -3,224 +3,796 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- التلميح السري الأول: دمج حرفي ص ور في كود الميتا والأيقونة -->
-    <!-- Secret Token: S_R_Eternal_Bound_Intersection -->
-    <title>منصة المنارة التعليمية | وقف علمي</title>
+    <title>مساعد طلاب - حدد حلمك واتعب لأجله</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* التلميح السري الثاني: دمج رمزية الألوان (الصاد والراء) في الهوية البصرية */
         :root {
-            --primary-color: #007bff; /* لون صهيب - القوة والاستقرار */
-            --secondary-color: #e83e8c; /* لون روضة - النقاء والجمال */
-            --bg-dark: #121212;
-            --card-dark: #1e1e1e;
-            --text-dark: #ffffff;
+            --primary: #1a5f7a;
+            --primary-light: #2d8fb5;
+            --primary-dark: #0d3d4f;
+            --accent: #f4a261;
+            --accent-light: #f7c59f;
+            --accent-dark: #e76f51;
+            --success: #2a9d8f;
+            --warning: #e9c46a;
+            --danger: #e63946;
+            --dark: #1d3557;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --shadow: 0 10px 40px rgba(0,0,0,0.1);
+            --shadow-hover: 0 20px 60px rgba(0,0,0,0.15);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-dark);
-            margin: 0;
-            padding: 0;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%);
+            color: var(--dark);
+            overflow-x: hidden;
+            line-height: 1.7;
         }
 
-        header {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--gray-light); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(26, 95, 122, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(26, 95, 122, 0.6); }
+        }
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
 
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 15px;
-        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-slide-in { animation: slideInUp 0.8s ease-out forwards; }
+        .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
 
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 10px;
-            background: #000;
-            margin-bottom: 20px;
-        }
-
-        .video-container iframe {
-            position: absolute;
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
             top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            border: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(26,95,122,0.1);
+            padding: 12px 0;
+            transition: var(--transition);
+        }
+        .navbar.scrolled { box-shadow: var(--shadow); padding: 8px 0; }
+        .nav-container {
+            max-width: 1400px; margin: 0 auto; padding: 0 30px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; cursor: pointer; }
+        .logo-icon {
+            width: 50px; height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 22px;
+            box-shadow: 0 4px 15px rgba(26,95,122,0.3);
+            position: relative; overflow: hidden;
+        }
+        .logo-icon::after {
+            content: ''; position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            animation: gradient-shift 3s ease infinite; background-size: 200% 200%;
+        }
+        .logo-text { display: flex; flex-direction: column; }
+        .logo-title { font-size: 1.4rem; font-weight: 800; color: var(--primary-dark); line-height: 1.2; }
+        .logo-slogan { font-size: 0.75rem; color: var(--accent-dark); font-weight: 600; letter-spacing: 0.5px; }
+        .nav-links { display: flex; gap: 8px; align-items: center; }
+        .nav-link {
+            padding: 10px 20px; border-radius: 12px; text-decoration: none;
+            color: var(--dark); font-weight: 600; font-size: 0.95rem;
+            transition: var(--transition); position: relative; cursor: pointer;
+            border: none; background: none; font-family: inherit;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--primary); background: rgba(26,95,122,0.08); }
+        .nav-link.active::after {
+            content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+            width: 20px; height: 3px; background: var(--accent); border-radius: 2px;
+        }
+        .nav-btn {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 0.9rem;
+            cursor: pointer; transition: var(--transition); font-family: inherit;
+            box-shadow: 0 4px 15px rgba(26,95,122,0.3);
+        }
+        .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(26,95,122,0.4); }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            padding: 120px 30px 60px; position: relative; overflow: hidden;
+        }
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        .hero-bg .circle { position: absolute; border-radius: 50%; opacity: 0.1; }
+        .hero-bg .circle-1 { width: 600px; height: 600px; background: var(--primary); top: -200px; right: -100px; animation: float 8s ease-in-out infinite; }
+        .hero-bg .circle-2 { width: 400px; height: 400px; background: var(--accent); bottom: -100px; left: -100px; animation: float 10s ease-in-out infinite reverse; }
+        .hero-bg .circle-3 { width: 300px; height: 300px; background: var(--success); top: 50%; left: 30%; animation: float 7s ease-in-out infinite 1s; }
+        .hero-container {
+            max-width: 1400px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+            align-items: center; position: relative; z-index: 1;
+        }
+        .hero-content h1 {
+            font-size: 3.5rem; font-weight: 900; color: var(--primary-dark);
+            line-height: 1.2; margin-bottom: 20px; animation: slideInUp 0.8s ease-out forwards;
+        }
+        .hero-content h1 span {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            position: relative;
+        }
+        .hero-content h1 .dream-text { display: inline-block; position: relative; }
+        .hero-content h1 .dream-text::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 6px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark)); border-radius: 3px; opacity: 0.6;
+        }
+        .hero-subtitle {
+            font-size: 1.3rem; color: var(--gray); margin-bottom: 30px;
+            animation: slideInUp 0.8s ease-out 0.2s forwards; opacity: 0;
+        }
+        .hero-btns {
+            display: flex; gap: 16px; margin-bottom: 40px;
+            animation: slideInUp 0.8s ease-out 0.4s forwards; opacity: 0;
+        }
+        .btn-primary {
+            padding: 16px 36px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; border: none; border-radius: 14px; font-size: 1.1rem; font-weight: 700;
+            cursor: pointer; transition: var(--transition); font-family: inherit;
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 8px 30px rgba(26,95,122,0.35); text-decoration: none;
+        }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 40px rgba(26,95,122,0.45); }
+        .btn-secondary {
+            padding: 16px 36px; background: white; color: var(--primary); border: 2px solid var(--primary);
+            border-radius: 14px; font-size: 1.1rem; font-weight: 700; cursor: pointer;
+            transition: var(--transition); font-family: inherit;
+            display: flex; align-items: center; gap: 10px; text-decoration: none;
+        }
+        .btn-secondary:hover { background: var(--primary); color: white; transform: translateY(-3px); }
+        .hero-stats {
+            display: flex; gap: 40px;
+            animation: slideInUp 0.8s ease-out 0.6s forwards; opacity: 0;
+        }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 2.2rem; font-weight: 900; color: var(--primary); display: block; }
+        .stat-label { font-size: 0.9rem; color: var(--gray); font-weight: 600; }
+
+        /* Mind Map Demo */
+        .hero-visual { position: relative; animation: float 6s ease-in-out infinite; }
+        .mindmap-demo {
+            width: 100%; height: 500px; background: white; border-radius: 24px;
+            box-shadow: var(--shadow); padding: 30px; position: relative; overflow: hidden;
+        }
+        .mindmap-demo::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--success), var(--warning));
+        }
+        .mm-node {
+            position: absolute; padding: 10px 18px; border-radius: 12px;
+            font-weight: 700; font-size: 0.85rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            animation: fadeIn 1s ease-out forwards; opacity: 0;
+        }
+        .mm-node.central {
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; font-size: 1.1rem; padding: 16px 28px; z-index: 10;
+        }
+        .mm-node.branch-1 { top: 15%; left: 20%; background: linear-gradient(135deg, #e76f51, #f4a261); color: white; animation-delay: 0.3s; }
+        .mm-node.branch-2 { top: 15%; right: 20%; background: linear-gradient(135deg, #2a9d8f, #264653); color: white; animation-delay: 0.5s; }
+        .mm-node.branch-3 { bottom: 15%; left: 15%; background: linear-gradient(135deg, #e9c46a, #f4a261); color: var(--dark); animation-delay: 0.7s; }
+        .mm-node.branch-4 { bottom: 15%; right: 15%; background: linear-gradient(135deg, #1d3557, #457b9d); color: white; animation-delay: 0.9s; }
+        .mm-line {
+            position: absolute; background: linear-gradient(90deg, var(--primary-light), var(--accent));
+            height: 3px; border-radius: 2px; opacity: 0.6; animation: fadeIn 1s ease-out forwards; opacity: 0;
+        }
+        .mm-line-1 { top: 35%; left: 30%; width: 80px; transform: rotate(-30deg); animation-delay: 0.4s; }
+        .mm-line-2 { top: 35%; right: 30%; width: 80px; transform: rotate(30deg); animation-delay: 0.6s; }
+        .mm-line-3 { bottom: 35%; left: 28%; width: 80px; transform: rotate(30deg); animation-delay: 0.8s; }
+        .mm-line-4 { bottom: 35%; right: 28%; width: 80px; transform: rotate(-30deg); animation-delay: 1s; }
+        .mm-sub {
+            position: absolute; padding: 6px 12px; border-radius: 8px;
+            font-size: 0.75rem; font-weight: 600; background: var(--gray-light); color: var(--dark);
+            animation: fadeIn 1s ease-out forwards; opacity: 0;
+        }
+        .mm-sub.s1 { top: 8%; left: 8%; animation-delay: 0.6s; }
+        .mm-sub.s2 { top: 8%; right: 8%; animation-delay: 0.8s; }
+        .mm-sub.s3 { bottom: 8%; left: 5%; animation-delay: 1s; }
+        .mm-sub.s4 { bottom: 8%; right: 5%; animation-delay: 1.2s; }
+
+        /* ===== SECTIONS ===== */
+        .section { padding: 100px 30px; position: relative; }
+        .section-container { max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-tag {
+            display: inline-block; padding: 8px 20px; background: rgba(26,95,122,0.1);
+            color: var(--primary); border-radius: 50px; font-weight: 700; font-size: 0.9rem; margin-bottom: 16px;
+        }
+        .section-title { font-size: 2.8rem; font-weight: 900; color: var(--primary-dark); margin-bottom: 16px; }
+        .section-desc { font-size: 1.2rem; color: var(--gray); max-width: 700px; margin: 0 auto; }
+
+        /* ===== FEATURES ===== */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .feature-card {
+            background: white; border-radius: 24px; padding: 40px 30px;
+            box-shadow: var(--shadow); transition: var(--transition); position: relative; overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .feature-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent)); transform: scaleX(0); transform-origin: right; transition: var(--transition);
+        }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-hover); }
+        .feature-card:hover::before { transform: scaleX(1); }
+        .feature-icon {
+            width: 70px; height: 70px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; margin-bottom: 24px; position: relative;
+        }
+        .feature-icon::after { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 20px; opacity: 0.2; }
+        .feature-icon.blue { background: rgba(26,95,122,0.1); color: var(--primary); }
+        .feature-icon.orange { background: rgba(244,162,97,0.15); color: var(--accent-dark); }
+        .feature-icon.green { background: rgba(42,157,143,0.15); color: var(--success); }
+        .feature-icon.purple { background: rgba(102,126,234,0.15); color: #667eea; }
+        .feature-icon.red { background: rgba(230,57,70,0.1); color: var(--danger); }
+        .feature-icon.yellow { background: rgba(233,196,106,0.15); color: #d4a017; }
+        .feature-title { font-size: 1.3rem; font-weight: 800; color: var(--dark); margin-bottom: 12px; }
+        .feature-desc { color: var(--gray); font-size: 0.95rem; line-height: 1.8; }
+
+        /* ===== SUMMARIZER ===== */
+        .summarizer-section {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white; position: relative; overflow: hidden;
+        }
+        .summarizer-section::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .summarizer-section .section-title, .summarizer-section .section-desc { color: white; }
+        .summarizer-section .section-tag { background: rgba(255,255,255,0.15); color: white; }
+        .summarizer-box {
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-radius: 24px;
+            padding: 40px; border: 1px solid rgba(255,255,255,0.2); max-width: 900px; margin: 0 auto;
+        }
+        .input-group { display: flex; gap: 12px; margin-bottom: 24px; }
+        .input-field {
+            flex: 1; padding: 16px 24px; border-radius: 14px; border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1); color: white; font-size: 1rem; font-family: inherit;
+            transition: var(--transition); outline: none;
+        }
+        .input-field::placeholder { color: rgba(255,255,255,0.6); }
+        .input-field:focus { border-color: var(--accent); background: rgba(255,255,255,0.15); }
+        .summarize-btn {
+            padding: 16px 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: white; border: none; border-radius: 14px; font-size: 1.1rem; font-weight: 700;
+            cursor: pointer; transition: var(--transition); font-family: inherit;
+            display: flex; align-items: center; gap: 10px; white-space: nowrap;
+        }
+        .summarize-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(244,162,97,0.4); }
+        .summarize-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .options-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+        .option-chip {
+            padding: 10px 20px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 50px; color: white; font-weight: 600; font-size: 0.9rem;
+            cursor: pointer; transition: var(--transition); font-family: inherit;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .option-chip:hover, .option-chip.active { background: rgba(255,255,255,0.25); border-color: var(--accent); }
+        .option-chip.active { background: var(--accent); border-color: var(--accent); }
+
+        .result-area { margin-top: 40px; display: none; }
+        .result-area.show { display: block; animation: slideInUp 0.6s ease-out; }
+        .result-tabs { display: flex; gap: 8px; margin-bottom: 20px; justify-content: center; }
+        .result-tab {
+            padding: 10px 24px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px; color: white; font-weight: 600; cursor: pointer;
+            transition: var(--transition); font-family: inherit;
+        }
+        .result-tab.active { background: white; color: var(--primary); }
+        .result-content {
+            background: white; border-radius: 20px; padding: 30px;
+            color: var(--dark); min-height: 300px;
+        }
+        .mindmap-result { display: flex; justify-content: center; align-items: center; min-height: 300px; }
+        .summary-text { text-align: right; line-height: 2; }
+        .summary-text h3 { color: var(--primary); margin-bottom: 16px; font-size: 1.3rem; }
+        .summary-text ul { list-style: none; padding: 0; }
+        .summary-text li {
+            padding: 10px 0; border-bottom: 1px solid var(--gray-light);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .summary-text li::before {
+            content: '✓'; width: 28px; height: 28px; background: var(--success); color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; flex-shrink: 0;
+        }
+        .loading-spinner { display: none; text-align: center; padding: 40px; }
+        .loading-spinner.show { display: block; }
+        .spinner {
+            width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.2);
+            border-top-color: var(--accent); border-radius: 50%;
+            animation: rotate 1s linear infinite; margin: 0 auto 20px;
         }
 
-        .card {
-            background-color: var(--card-dark);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        /* ===== BACCALAUREATE ===== */
+        .bac-section { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); }
+        .bac-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+        .bac-card {
+            background: white; border-radius: 20px; overflow: hidden;
+            box-shadow: var(--shadow); transition: var(--transition); border: 1px solid rgba(0,0,0,0.05);
         }
-
-        h2 {
-            color: var(--primary-color);
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
+        .bac-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+        .bac-header { padding: 24px; color: white; position: relative; overflow: hidden; }
+        .bac-header::after {
+            content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
         }
-
-        /* ميزة الجداول الزمنية التفاعلية */
-        .timestamp-list {
-            list-style: none;
-            padding: 0;
+        .bac-header.science { background: linear-gradient(135deg, #1a5f7a, #2d8fb5); }
+        .bac-header.literature { background: linear-gradient(135deg, #e76f51, #f4a261); }
+        .bac-header.management { background: linear-gradient(135deg, #2a9d8f, #264653); }
+        .bac-header.technique { background: linear-gradient(135deg, #1d3557, #457b9d); }
+        .bac-header h3 { font-size: 1.4rem; font-weight: 800; position: relative; z-index: 1; }
+        .bac-header p { font-size: 0.85rem; opacity: 0.9; margin-top: 4px; position: relative; z-index: 1; }
+        .bac-body { padding: 24px; }
+        .bac-subject {
+            display: flex; align-items: center; gap: 12px; padding: 12px 0;
+            border-bottom: 1px solid var(--gray-light); cursor: pointer; transition: var(--transition);
         }
+        .bac-subject:hover { color: var(--primary); padding-right: 8px; }
+        .bac-subject:last-child { border-bottom: none; }
+        .bac-subject-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+        .bac-subject-info h4 { font-size: 1rem; font-weight: 700; }
+        .bac-subject-info p { font-size: 0.8rem; color: var(--gray); }
 
-        .timestamp-item {
-            padding: 10px;
-            border-bottom: 1px solid #333;
-            cursor: pointer;
-            transition: 0.3s;
+        .countdown-box {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary)); border-radius: 24px;
+            padding: 40px; text-align: center; color: white; margin-bottom: 40px;
+            box-shadow: var(--shadow); position: relative; overflow: hidden;
         }
-
-        .timestamp-item:hover {
-            background-color: #252525;
-            color: var(--secondary-color);
+        .countdown-box::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
+        .countdown-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 24px; position: relative; z-index: 1; }
+        .countdown-timer { display: flex; justify-content: center; gap: 24px; position: relative; z-index: 1; }
+        .countdown-item { background: rgba(255,255,255,0.15); border-radius: 16px; padding: 20px 24px; min-width: 80px; }
+        .countdown-number { font-size: 2.5rem; font-weight: 900; display: block; line-height: 1; }
+        .countdown-label { font-size: 0.85rem; opacity: 0.8; margin-top: 8px; }
 
-        .time-badge {
-            background-color: var(--primary-color);
-            padding: 2px 8px;
-            border-radius: 5px;
-            font-size: 0.9em;
-            margin-left: 10px;
+        /* ===== TOOLS ===== */
+        .tools-section { background: white; }
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+        .tool-card {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff); border-radius: 20px;
+            padding: 32px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: var(--transition); border: 1px solid rgba(0,0,0,0.04); cursor: pointer; position: relative; overflow: hidden;
         }
-
-        /* ميزة بطاقات الاستذكار Flashcards */
-        .flashcard {
-            background: #252525;
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            margin-top: 10px;
-            user-select: none;
+        .tool-card::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent)); transform: scaleX(0); transition: var(--transition);
         }
-
-        .flashcard .answer {
-            display: none;
-            color: #28a745;
-            margin-top: 10px;
-            font-weight: bold;
+        .tool-card:hover { transform: translateY(-8px); box-shadow: var(--shadow); }
+        .tool-card:hover::after { transform: scaleX(1); }
+        .tool-icon-wrap {
+            width: 80px; height: 80px; border-radius: 24px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; margin: 0 auto 20px; position: relative;
         }
+        .tool-icon-wrap::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 24px; opacity: 0.15; }
+        .tool-icon-wrap.blue { background: rgba(26,95,122,0.1); color: var(--primary); }
+        .tool-icon-wrap.green { background: rgba(42,157,143,0.1); color: var(--success); }
+        .tool-icon-wrap.orange { background: rgba(244,162,97,0.15); color: var(--accent-dark); }
+        .tool-icon-wrap.purple { background: rgba(102,126,234,0.1); color: #667eea; }
+        .tool-icon-wrap.red { background: rgba(230,57,70,0.1); color: var(--danger); }
+        .tool-icon-wrap.yellow { background: rgba(233,196,106,0.15); color: #d4a017; }
+        .tool-name { font-size: 1.2rem; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+        .tool-desc { font-size: 0.9rem; color: var(--gray); line-height: 1.7; }
 
-        /* زر التحميل والتحكم */
-        .btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 10px;
+        /* ===== TESTIMONIALS ===== */
+        .testimonials-section {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white; position: relative; overflow: hidden;
         }
-
-        .btn:hover {
-            background-color: #0056b3;
+        .testimonials-section::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
+        .testimonials-section .section-title, .testimonials-section .section-desc { color: white; }
+        .testimonials-section .section-tag { background: rgba(255,255,255,0.15); color: white; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+        .testimonial-card {
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-radius: 24px;
+            padding: 36px; border: 1px solid rgba(255,255,255,0.15); transition: var(--transition); position: relative;
+        }
+        .testimonial-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.15); }
+        .quote-icon { font-size: 3rem; color: var(--accent); opacity: 0.5; line-height: 1; margin-bottom: 16px; }
+        .testimonial-text { font-size: 1.05rem; line-height: 1.9; margin-bottom: 24px; font-style: italic; }
+        .testimonial-author { display: flex; align-items: center; gap: 16px; }
+        .author-avatar {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 1.2rem; color: white;
+        }
+        .author-info h4 { font-weight: 700; font-size: 1rem; }
+        .author-info p { font-size: 0.85rem; opacity: 0.8; }
+        .stars { color: var(--warning); margin-top: 4px; font-size: 0.9rem; }
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            margin-top: 40px;
-            border-top: 1px solid #333;
-            font-size: 0.9em;
-            color: #aaa;
+        /* ===== GARDEN (Hidden Rouda) ===== */
+        .garden-section {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            padding: 80px 30px; position: relative; overflow: hidden;
+        }
+        .garden-section::before {
+            content: '🌱'; position: absolute; font-size: 200px; opacity: 0.05;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+        }
+        .garden-container { max-width: 900px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+        .garden-quote {
+            font-size: 1.8rem; font-weight: 800; color: var(--primary-dark);
+            line-height: 1.8; margin-bottom: 20px; position: relative;
+        }
+        .garden-quote::before, .garden-quote::after {
+            font-size: 4rem; color: var(--success); opacity: 0.3;
+            position: absolute; line-height: 1;
+        }
+        .garden-quote::before { content: '"'; top: -20px; right: -30px; }
+        .garden-quote::after { content: '"'; bottom: -40px; left: -30px; }
+        .garden-author { font-size: 1.1rem; color: var(--gray); font-weight: 600; }
+        .garden-seed { display: inline-block; margin-top: 24px; font-size: 2rem; animation: float 3s ease-in-out infinite; }
+        .garden-code { display: none; }
+
+        /* ===== CTA ===== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            padding: 100px 30px; text-align: center; color: white; position: relative; overflow: hidden;
+        }
+        .cta-section::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .cta-title { font-size: 2.8rem; font-weight: 900; margin-bottom: 20px; position: relative; z-index: 1; }
+        .cta-desc { font-size: 1.2rem; opacity: 0.95; max-width: 600px; margin: 0 auto 40px; position: relative; z-index: 1; }
+        .cta-btn {
+            padding: 18px 48px; background: white; color: var(--accent-dark); border: none;
+            border-radius: 16px; font-size: 1.2rem; font-weight: 800; cursor: pointer;
+            transition: var(--transition); font-family: inherit; position: relative; z-index: 1;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .cta-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: linear-gradient(135deg, var(--primary-dark), #0a2a3a);
+            color: white; padding: 80px 30px 40px; position: relative; overflow: hidden;
+        }
+        .footer::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .footer-container {
+            max-width: 1400px; margin: 0 auto;
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px;
+            position: relative; z-index: 1;
+        }
+        .footer-brand h3 { font-size: 1.8rem; font-weight: 900; margin-bottom: 16px; color: var(--accent); }
+        .footer-brand p { font-size: 0.95rem; opacity: 0.8; line-height: 1.8; margin-bottom: 24px; }
+        .footer-social { display: flex; gap: 12px; }
+        .social-link {
+            width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center; color: white;
+            text-decoration: none; transition: var(--transition); font-size: 1.1rem;
+        }
+        .social-link:hover { background: var(--accent); transform: translateY(-3px); }
+        .footer-col h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 24px; color: var(--accent); }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 12px; }
+        .footer-col a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.95rem; transition: var(--transition); display: inline-block; }
+        .footer-col a:hover { color: var(--accent); padding-right: 8px; }
+
+        /* ===== WAQF ===== */
+        .waqf-section {
+            background: linear-gradient(135deg, #1a3a2a, #2d5a3f);
+            padding: 60px 30px; text-align: center; color: white;
+            position: relative; overflow: hidden; border-top: 3px solid var(--accent);
+        }
+        .waqf-section::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .waqf-icon { font-size: 3rem; margin-bottom: 20px; display: inline-block; animation: float 4s ease-in-out infinite; }
+        .waqf-title { font-size: 2rem; font-weight: 900; margin-bottom: 16px; color: var(--accent); position: relative; z-index: 1; }
+        .waqf-text { font-size: 1.3rem; line-height: 2.2; max-width: 800px; margin: 0 auto; font-weight: 600; position: relative; z-index: 1; }
+        .waqf-verse {
+            font-size: 1.5rem; font-weight: 800; color: var(--accent-light); margin-top: 24px;
+            padding: 20px; background: rgba(255,255,255,0.05); border-radius: 16px;
+            display: inline-block; position: relative; z-index: 1;
+        }
+        .waqf-divider { width: 100px; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-light)); margin: 20px auto; border-radius: 2px; }
+
+        .footer-bottom { text-align: center; padding-top: 40px; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; opacity: 0.7; position: relative; z-index: 1; }
+        .footer-bottom .heart { color: var(--accent); display: inline-block; animation: pulse-glow 2s ease-in-out infinite; }
+
+        /* ===== MOBILE ===== */
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; font-family: inherit; }
+        .mobile-menu { display: none; position: fixed; top: 0; right: 0; width: 300px; height: 100vh; background: white; z-index: 2000; padding: 80px 30px 30px; box-shadow: -10px 0 40px rgba(0,0,0,0.2); transform: translateX(100%); transition: transform 0.3s ease; }
+        .mobile-menu.open { transform: translateX(0); }
+        .mobile-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1999; }
+        .mobile-overlay.show { display: block; }
+        .mobile-menu-close { position: absolute; top: 20px; left: 20px; background: none; border: none; font-size: 1.5rem; color: var(--dark); cursor: pointer; font-family: inherit; }
+        .mobile-nav-link { display: block; padding: 16px 0; border-bottom: 1px solid var(--gray-light); color: var(--dark); text-decoration: none; font-weight: 700; font-size: 1.1rem; cursor: pointer; border: none; background: none; font-family: inherit; width: 100%; text-align: right; }
+
+        .scroll-reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .scroll-reveal.revealed { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 1024px) {
+            .hero-container { grid-template-columns: 1fr; text-align: center; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .hero-btns, .hero-stats { justify-content: center; }
+            .hero-visual { order: -1; }
+            .mindmap-demo { height: 400px; }
+            .footer-container { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero-content h1 { font-size: 2rem; }
+            .hero-subtitle { font-size: 1rem; }
+            .section-title { font-size: 2rem; }
+            .input-group { flex-direction: column; }
+            .countdown-timer { gap: 12px; }
+            .countdown-item { padding: 12px 16px; min-width: 60px; }
+            .countdown-number { font-size: 1.8rem; }
+            .footer-container { grid-template-columns: 1fr; gap: 40px; }
+            .features-grid, .bac-grid, .tools-grid, .testimonials-grid { grid-template-columns: 1fr; }
+            .garden-quote { font-size: 1.3rem; }
+            .garden-quote::before, .garden-quote::after { display: none; }
+            .waqf-text { font-size: 1.1rem; }
+            .waqf-verse { font-size: 1.2rem; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
 
-    <header>
-        <h1>منصة المُنقذ التعليمية</h1>
-        <p>ملخصات ذكية وتفاعلية لتوفير وقت الطلاب</p>
-    </header>
-
-    <div class="container">
-
-        <!-- قسم عرض الفيديو المستهدف -->
-        <div class="card">
-            <h2>الدرس الحالي: أساسيات المراجعة الذكية</h2>
-            <div class="video-container">
-                <!-- هنا يتم وضع رابط الفيديو التوضيحي -->
-                <iframe id="edu-video" src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="scrollToSection('hero'); return false;">
+                <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="logo-text">
+                    <span class="logo-title">مساعد طلاب</span>
+                    <span class="logo-slogan">حدد حلمك واتعب لأجله</span>
+                </div>
+            </a>
+            <div class="nav-links">
+                <button class="nav-link active" onclick="scrollToSection('hero')">الرئيسية</button>
+                <button class="nav-link" onclick="scrollToSection('features')">المميزات</button>
+                <button class="nav-link" onclick="scrollToSection('summarizer')">تلخيص الفيديو</button>
+                <button class="nav-link" onclick="scrollToSection('bac')">البكالوريا</button>
+                <button class="nav-link" onclick="scrollToSection('tools')">الأدوات</button>
+                <button class="nav-btn" onclick="scrollToSection('summarizer')">
+                    <i class="fas fa-magic"></i> ابدأ الآن
+                </button>
             </div>
-            <button class="btn" onclick="window.print()">تحميل الملخص كـ PDF</button>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
+    </nav>
 
-        <!-- ميزة الجدول الزمني الذكي والملخص الرقمي -->
-        <div class="card">
-            <h2>التلخيص التفاعلي (اضغط للانتقال للوقت)</h2>
-            <ul class="timestamp-list">
-                <li class="timestamp-item" onclick="seekVideo(10)">
-                    <span class="time-badge">00:10</span> المقدمة وخريطة الطريق للدرس.
-                </li>
-                <li class="timestamp-item" onclick="seekVideo(60)">
-                    <span class="time-badge">01:00</span> القاعدة الأولى: التكرار المتباعد وفائدته.
-                </li>
-                <li class="timestamp-item" onclick="seekVideo(150)">
-                    <span class="time-badge">02:30</span> القاعدة الثانية: دمج المفاهيم والخرائط الذهنية.
-                </li>
-            </ul>
-        </div>
-
-        <!-- ميزة بطاقات الاستذكار السريع Flashcards -->
-        <div class="card">
-            <h2>بطاقات الاستذكار السريع (اضغط لإظهار الإجابة)</h2>
-            <div class="flashcard" onclick="toggleFlashcard(this)">
-                <div>سؤال: ما هي أفضل طريقة لتثبيت الحفظ السريع؟</div>
-                <div class="answer">الإجابة: استخدام الخرائط الذهنية ومراجعتها بعد 24 ساعة.</div>
-            </div>
-        </div>
-
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" onclick="toggleMobileMenu()"><i class="fas fa-times"></i></button>
+        <button class="mobile-nav-link" onclick="scrollToSection('hero'); toggleMobileMenu()">الرئيسية</button>
+        <button class="mobile-nav-link" onclick="scrollToSection('features'); toggleMobileMenu()">المميزات</button>
+        <button class="mobile-nav-link" onclick="scrollToSection('summarizer'); toggleMobileMenu()">تلخيص الفيديو</button>
+        <button class="mobile-nav-link" onclick="scrollToSection('bac'); toggleMobileMenu()">البكالوريا</button>
+        <button class="mobile-nav-link" onclick="scrollToSection('tools'); toggleMobileMenu()">الأدوات</button>
     </div>
 
-    <!-- تذييل الموقع يوضح أنه وقف دائم للجميع -->
-    <footer>
-        <p>وقف علمي لله تعالى - يرجى النشر لتعميم الأجر والمنفعة</p>
-        <small id="secret-intersection"></small>
-    </footer>
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="circle circle-1"></div>
+            <div class="circle circle-2"></div>
+            <div class="circle circle-3"></div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>
+                    <span class="dream-text">حدد حلمك</span><br>
+                    و<span>اتعب لأجله</span>
+                </h1>
+                <p class="hero-subtitle">
+                    منصة <strong>مساعد طلاب</strong> تساعدك على تلخيص فيديوهات الدروس إلى خرائط ذهنية تفاعلية، 
+                    وتوفير ساعات المذاكرة لطلاب البكالوريا الجزائريين 🇩🇿
+                </p>
+                <div class="hero-btns">
+                    <button class="btn-primary" onclick="scrollToSection('summarizer')">
+                        <i class="fas fa-play"></i> جرب التلخيص الآن
+                    </button>
+                    <button class="btn-secondary" onclick="scrollToSection('features')">
+                        <i class="fas fa-info-circle"></i> اكتشف المزيد
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="15000">0</span>
+                        <span class="stat-label">طالب مسجل</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="85000">0</span>
+                        <span class="stat-label">فيديو مُلخّص</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="98">0</span>
+                        <span class="stat-label">% رضا الطلاب</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="mindmap-demo">
+                    <div class="mm-node central"><i class="fas fa-brain"></i> الدرس المُلخّص</div>
+                    <div class="mm-line mm-line-1"></div>
+                    <div class="mm-line mm-line-2"></div>
+                    <div class="mm-line mm-line-3"></div>
+                    <div class="mm-line mm-line-4"></div>
+                    <div class="mm-node branch-1"><i class="fas fa-book"></i> المفاهيم</div>
+                    <div class="mm-node branch-2"><i class="fas fa-lightbulb"></i> الأفكار الرئيسية</div>
+                    <div class="mm-node branch-3"><i class="fas fa-check-circle"></i> النقاط المهمة</div>
+                    <div class="mm-node branch-4"><i class="fas fa-question-circle"></i> التمارين</div>
+                    <div class="mm-sub s1">تعريف</div>
+                    <div class="mm-sub s2">قوانين</div>
+                    <div class="mm-sub s3">تطبيقات</div>
+                    <div class="mm-sub s4">حلول</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <script>
-        // التلميح السري الثالث: دالة برمجية تجمع الحروف المتقاطعة لاسم (صهيب وروضة) في الذاكرة لخلق شفرة خاصة
-        function _initSecretBond() {
-            const part1 = ['ص', 'ه', 'ي', 'ب'];
-            const part2 = ['ر', 'و', 'ض', 'ة'];
-            // تقاطع الأحرف في وحدة التحكم للمطورين دون إزعاج الطلاب
-            console.log(`System Bridge: ${part1[0]}${part2[0]} - الروابط الرقمية الخفية`);
-        }
-        _initSecretBond();
+    <!-- ===== FEATURES ===== -->
+    <section class="section" id="features">
+        <div class="section-container">
+            <div class="section-header scroll-reveal">
+                <span class="section-tag"><i class="fas fa-star"></i> مميزاتنا</span>
+                <h2 class="section-title">كل ما يحتاجه الطالب الجزائري</h2>
+                <p class="section-desc">أدوات ذكية مصممة خصيصاً لمساعدتك على النجاح في البكالوريا</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon blue"><i class="fas fa-project-diagram"></i></div>
+                    <h3 class="feature-title">خرائط ذهنية تفاعلية</h3>
+                    <p class="feature-desc">حوّل أي فيديو درس إلى خريطة ذهنية واضحة تربط بين المفاهيم والأفكار بشكل بصري سهل الفهم</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon orange"><i class="fas fa-clock"></i></div>
+                    <h3 class="feature-title">توفير الوقت</h3>
+                    <p class="feature-desc">ملخص ساعة فيديو في 5 دقائق فهم. لا مزيد من إضاعة الوقت في كتابة الملاحظات اليدوية</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon green"><i class="fas fa-language"></i></div>
+                    <h3 class="feature-title">دعم كامل للعربية</h3>
+                    <p class="feature-desc">تلخيص دقيق للفيديوهات باللغة العربية مع التعرف على المصطلحات العلمية والرياضية</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon purple"><i class="fas fa-mobile-alt"></i></div>
+                    <h3 class="feature-title">يعمل على الجوال</h3>
+                    <p class="feature-desc">تطبيق ويب تقدمي (PWA) يعمل بدون إنترنت بعد التحميل. مذاكرة في أي وقت وأي مكان</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon red"><i class="fas fa-moon"></i></div>
+                    <h3 class="feature-title">وضع الليل</h3>
+                    <p class="feature-desc">واجهة داكنة مريحة للعين للمذاكرة ليلاً. حماية كاملة من إرهاق العين أثناء المذاكرة</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon yellow"><i class="fas fa-share-alt"></i></div>
+                    <h3 class="feature-title">مشاركة الملخصات</h3>
+                    <p class="feature-desc">شارك ملخصاتك مع أصدقائك عبر رابط أو PDF قابل للطباعة. التعليم الجماعي أقوى</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        // دالة التحكم بوقت الفيديو عند الضغط على الجدول الزمني
-        function seekVideo(seconds) {
-            const iframe = document.getElementById('edu-video');
-            const currentSrc = iframe.src.split('?')[0];
-            iframe.src = currentSrc + "?start=" + seconds + "&autoplay=1";
-        }
+    <!-- ===== SUMMARIZER ===== -->
+    <section class="section summarizer-section" id="summarizer">
+        <div class="section-container">
+            <div class="section-header scroll-reveal">
+                <span class="section-tag"><i class="fas fa-magic"></i> أداة التلخيص الذكي</span>
+                <h2 class="section-title">حوّل الفيديو إلى خريطة ذهنية</h2>
+                <p class="section-desc">ألصق رابط الفيديو وسنقوم بتحليله وإنشاء ملخص تفاعلي في ثوانٍ</p>
+            </div>
+            <div class="summarizer-box scroll-reveal">
+                <div class="input-group">
+                    <input type="text" class="input-field" id="videoUrl" placeholder="ألصق رابط فيديو YouTube هنا...">
+                    <button class="summarize-btn" id="summarizeBtn" onclick="summarizeVideo()">
+                        <i class="fas fa-wand-magic-sparkles"></i> لخّص الفيديو
+                    </button>
+                </div>
+                <div class="options-row">
+                    <button class="option-chip active" onclick="selectOption(this, 'mindmap')">
+                        <i class="fas fa-project-diagram"></i> خريطة ذهنية
+                    </button>
+                    <button class="option-chip" onclick="selectOption(this, 'summary')">
+                        <i class="fas fa-list"></i> ملخص نقطي
+                    </button>
+                    <button class="option-chip" onclick="selectOption(this, 'flashcards')">
+                        <i class="fas fa-clone"></i> بطاقات تعليمية
+                    </button>
+                    <button class="option-chip" onclick="selectOption(this, 'questions')">
+                        <i class="fas fa-question-circle"></i> أسئلة مراجعة
+                    </button>
+                </div>
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <p style="color: white; font-weight: 600;">جاري تحليل الفيديو وإنشاء الملخص...</p>
+                </div>
+                <div class="result-area" id="resultArea">
+                    <div class="result-tabs">
+                        <button class="result-tab active" onclick="showResultTab('mindmap')">الخريطة الذهنية</button>
+                        <button class="result-tab" onclick="showResultTab('summary')">الملخص</button>
+                        <button class="result-tab" onclick="showResultTab('flashcards')">البطاقات</button>
+                    </div>
+                    <div class="result-content" id="resultContent">
+                        <div class="mindmap-result" id="mindmapResult">
+                            <svg class="mindmap-svg" viewBox="0 0 700 400">
+                                <defs>
+                                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#1a5f7a;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#2d8fb5;stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#e76f51;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#f4a261;stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#2a9d8f;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#264653;stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#1d3557;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#457b9d;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <!-- Central Node -->
+                                <rect x="280" y="170" width="140" height="60" rx="30" fill="url(#grad1)" />
+                                <text x="350" y="205" text-anchor="middle" fill="white" font-size="16" font-weight="bold" font-family="Cairo">الدرس المُلخّص</text>
 
-        // دالة تشغيل بطاقات الاستذكار
-        function toggleFlashcard(element) {
-            const answer = element.querySelector('.answer');
-            if (answer.style.display === 'none' || answer.style.display === '') {
-                answer.style.display = 'block';
-            } else {
-                answer.style.display = 'none';
-            }
-        }
-    </script>
-</body>
-</html>
+                                <!-- Lines -->
+                                <line x1="350" y1="170" x2="200" y2="100" stroke="#1a5f7a" stroke-width="3" opacity="0.6"/>
+                                <line x1="350" y1="170" x2="500" y2="100" stroke="
