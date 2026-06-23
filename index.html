@@ -3,24 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مساعد البكالوريا - تلخيص فيديوهات يوتيوب</title>
-    
-    <!-- مكتبات -->
+    <title>مساعد البكالوريا | دليلك الذكي للنجاح</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans Arabic', 'Segoe UI', 'Tahoma', 'sans-serif'],
+                    },
                     colors: {
-                        primary: '#1e40af',
-                        secondary: '#3b82f6',
-                        accent: '#f59e0b',
-                        dark: '#0f172a',
-                        light: '#f8fafc'
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                            950: '#172554',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        }
                     }
                 }
             }
@@ -28,949 +57,931 @@
     </script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap');
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
-            min-height: 100vh;
+            font-family: 'Noto Sans Arabic', sans-serif;
+            background: #0a0e1a;
             color: #e2e8f0;
             overflow-x: hidden;
+            min-height: 100vh;
         }
         
-        .bg-particles {
+        /* خلفية متحركة */
+        .bg-animated {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
+            inset: 0;
             z-index: 0;
             overflow: hidden;
         }
         
-        .particle {
-            position: absolute;
-            width: 4px; height: 4px;
-            background: rgba(59, 130, 246, 0.3);
-            border-radius: 50%;
-            animation: float 15s infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
-        }
-        
-        .glass {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .glass-card {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(59, 130, 246, 0.5);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        
-        .summarize-btn {
-            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .summarize-btn::before {
+        .bg-animated::before {
             content: '';
             position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
+            inset: -50%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(37, 99, 235, 0.1) 0%, transparent 50%);
+            animation: bgRotate 30s linear infinite;
         }
         
-        .summarize-btn:hover::before { left: 100%; }
-        
-        .loader {
-            width: 48px; height: 48px;
-            border: 5px solid #3b82f6;
-            border-bottom-color: transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
+        @keyframes bgRotate {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
         
-        .mind-map-node {
-            background: rgba(59, 130, 246, 0.2);
-            border: 2px solid #3b82f6;
-            border-radius: 12px;
-            padding: 12px 20px;
-            margin: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .mind-map-node:hover {
-            background: rgba(59, 130, 246, 0.4);
-            transform: scale(1.05);
-        }
-        
-        .tab-btn {
-            @apply px-6 py-3 rounded-t-lg font-semibold transition-all duration-300;
-        }
-        
-        .tab-btn.active {
-            @apply bg-blue-600 text-white;
-        }
-        
-        .tab-btn:not(.active) {
-            @apply bg-slate-700 text-slate-300 hover:bg-slate-600;
-        }
-        
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #3b82f6;
-            border-radius: 4px;
-        }
-        
-        .bac-card {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(30, 64, 175, 0.1) 100%);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-        }
-        
-        .hidden-trigger {
-            opacity: 0;
-            position: absolute;
-            width: 1px;
-            height: 1px;
-        }
-        
-        .konami-code {
+        /* شبكة النقاط */
+        .dot-grid {
             position: fixed;
-            bottom: 10px;
-            right: 10px;
-            font-size: 8px;
-            color: rgba(255,255,255,0.05);
-            user-select: none;
-            cursor: default;
+            inset: 0;
+            z-index: 0;
+            background-image: radial-gradient(rgba(59, 130, 246, 0.15) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
         }
         
-        .sadaqa-banner {
-            background: linear-gradient(90deg, #059669 0%, #10b981 100%);
+        /* Glassmorphism */
+        .glass {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+        }
+        
+        .glass-card {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.25);
+        }
+        
+        /* زر متدرج */
+        .btn-gradient {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
             position: relative;
             overflow: hidden;
         }
         
-        .sadaqa-banner::after {
+        .btn-gradient::before {
             content: '';
             position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            animation: moveGrid 20s linear infinite;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
         }
         
-        @keyframes moveGrid {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(20px, 20px); }
+        .btn-gradient:hover::before {
+            left: 100%;
         }
         
-        .transcript-line {
-            padding: 8px 12px;
-            margin: 4px 0;
-            background: rgba(30, 41, 59, 0.5);
-            border-radius: 8px;
-            border-right: 3px solid #3b82f6;
-            transition: all 0.2s;
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
         
-        .transcript-line:hover {
-            background: rgba(59, 130, 246, 0.2);
+        /* تأثير النص المضيء */
+        .glow-text {
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0e1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2563eb;
+            border-radius: 3px;
+        }
+        
+        /* كويز */
+        .quiz-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quiz-option:hover {
             transform: translateX(-5px);
+            border-color: #fbbf24;
         }
         
-        .timestamp {
-            color: #f59e0b;
-            font-family: monospace;
-            font-size: 0.85rem;
-            margin-left: 8px;
+        .quiz-option.correct {
+            background: rgba(34, 197, 94, 0.2) !important;
+            border-color: #22c55e !important;
+            animation: correctPulse 0.5s ease;
         }
         
+        .quiz-option.wrong {
+            background: rgba(239, 68, 68, 0.2) !important;
+            border-color: #ef4444 !important;
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        /* موجات */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+        
+        .wave svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 120px;
+        }
+        
+        /* عداد */
+        .counter {
+            font-variant-numeric: tabular-nums;
+        }
+        
+        /* تأثير الكتابة */
+        .typewriter {
+            border-right: 3px solid #3b82f6;
+            animation: blink 0.8s infinite;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+        
+        /* صدقة جارية */
+        .sadaqa-strip {
+            background: linear-gradient(90deg, #059669 0%, #10b981 50%, #059669 100%);
+            background-size: 200% 100%;
+            animation: sadaqaSlide 10s linear infinite;
+        }
+        
+        @keyframes sadaqaSlide {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        
+        /* رد فعل الكويز */
+        .quiz-reveal {
+            animation: revealIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes revealIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        /* اسم مخفي */
+        .hidden-name {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .glass-card { margin: 0.5rem; }
-        }
-        
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white; color: black; }
-            .glass { background: white; border: 1px solid #ccc; }
+            .hero-title { font-size: 2rem !important; }
+            .glass-card:hover { transform: translateY(-4px) scale(1.01); }
         }
     </style>
 </head>
-<body class="antialiased">
+<body>
 
-    <!-- خلفية متحركة -->
-    <div class="bg-particles" id="particles"></div>
+    <!-- الخلفية -->
+    <div class="bg-animated"></div>
+    <div class="dot-grid"></div>
 
     <!-- صدقة جارية -->
-    <div class="sadaqa-banner text-white text-center py-2 px-4 text-sm font-semibold relative z-10">
-        <i class="fas fa-heart mr-2"></i>
-        هذا الموقع صدقة جارية على روح والديّ وجميع المسلمين الأحياء والأموات - اللهم تقبل منا صالح الأعمال
-        <span class="hidden-trigger" data-s="1">.</span>
+    <div class="sadaqa-strip text-white text-center py-2.5 px-4 text-sm font-semibold relative z-50">
+        <i class="fas fa-heart text-red-300 mr-2 animate-pulse"></i>
+        هذا الموقع صدقة جارية على روح والديّ وجميع المسلمين — اللهم تقبل منا صالح الأعمال
+        <span class="hidden-trigger" data-secret="1" style="opacity:0;position:absolute;width:1px;height:1px;cursor:pointer;">.</span>
     </div>
 
     <!-- Header -->
-    <header class="glass sticky top-0 z-50 border-b border-blue-500/20">
+    <header class="glass sticky top-0 z-40 border-b border-brand-500/20">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
-                        <i class="fas fa-graduation-cap text-white text-xl"></i>
+                <!-- Logo -->
+                <div class="flex items-center gap-3 group cursor-pointer" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+                    <div class="relative">
+                        <div class="w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl flex items-center justify-center shadow-lg shadow-brand-500/30 group-hover:shadow-brand-500/50 transition-all duration-500">
+                            <i class="fas fa-graduation-cap text-white text-xl"></i>
+                        </div>
+                        <div class="absolute -top-1 -right-1 w-4 h-4 bg-gold-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-star text-white text-[8px]"></i>
+                        </div>
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+                        <h1 class="text-xl font-bold bg-gradient-to-r from-brand-400 to-cyan-300 bg-clip-text text-transparent">
                             مساعد البكالوريا
                         </h1>
-                        <p class="text-xs text-slate-400">دليلك الذكي للنجاح في البكالوريا</p>
+                        <p class="text-[10px] text-slate-400 tracking-wider">BAC HELPER 2026</p>
                     </div>
                 </div>
-                
-                <div class="flex items-center gap-3">
-                    <button onclick="showAbout()" class="p-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">
-                        <i class="fas fa-info-circle text-blue-400"></i>
-                    </button>
-                </div>
+
+                <!-- Nav -->
+                <nav class="hidden md:flex items-center gap-1">
+                    <a href="#features" class="px-4 py-2 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all">المميزات</a>
+                    <a href="#branches" class="px-4 py-2 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all">الشعب</a>
+                    <a href="#tools" class="px-4 py-2 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all">الأدوات</a>
+                    <a href="#quiz" class="px-4 py-2 rounded-xl text-sm text-gold-400 hover:text-gold-300 hover:bg-gold-500/10 transition-all border border-gold-500/20">
+                        <i class="fas fa-trophy mr-1"></i>تحدي المعرفة
+                    </a>
+                </nav>
+
+                <!-- Mobile Menu -->
+                <button class="md:hidden p-2 rounded-lg bg-white/5 text-slate-300" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden glass border-t border-brand-500/10">
+            <div class="container mx-auto px-4 py-4 space-y-2">
+                <a href="#features" class="block px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition">المميزات</a>
+                <a href="#branches" class="block px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition">الشعب</a>
+                <a href="#tools" class="block px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 transition">الأدوات</a>
+                <a href="#quiz" class="block px-4 py-3 rounded-xl text-gold-400 bg-gold-500/10 transition">تحدي المعرفة</a>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8 relative z-10">
-        
-        <!-- Tabs -->
-        <div class="flex flex-wrap justify-center gap-2 mb-8">
-            <button onclick="switchTab('youtube')" class="tab-btn active" id="tab-youtube">
-                <i class="fab fa-youtube mr-2"></i>تلخيص يوتيوب
-            </button>
-            <button onclick="switchTab('mindmap')" class="tab-btn" id="tab-mindmap">
-                <i class="fas fa-project-diagram mr-2"></i>مخطط ذهني
-            </button>
-            <button onclick="switchTab('bac')" class="tab-btn" id="tab-bac">
-                <i class="fas fa-book mr-2"></i>بكالوريا
-            </button>
-            <button onclick="switchTab('tools')" class="tab-btn" id="tab-tools">
-                <i class="fas fa-tools mr-2"></i>أدوات
-            </button>
-            <button onclick="switchTab('history')" class="tab-btn" id="tab-history">
-                <i class="fas fa-history mr-2"></i>السجل
-            </button>
+    <!-- Hero Section -->
+    <section class="relative z-10 pt-16 pb-24 overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-sm mb-8 animate-float">
+                    <i class="fas fa-sparkles text-gold-400"></i>
+                    <span>صدقة جارية لجميع طلاب البكالوريا الجزائريين</span>
+                </div>
+
+                <!-- Title -->
+                <h1 class="hero-title text-5xl md:text-7xl font-black mb-6 leading-tight">
+                    <span class="block text-white">نجاحك في</span>
+                    <span class="block bg-gradient-to-r from-brand-400 via-cyan-400 to-brand-500 bg-clip-text text-transparent glow-text typewriter" id="heroTypewriter">
+                        البكالوريا يبدأ هنا
+                    </span>
+                </h1>
+
+                <!-- Description -->
+                <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                    منصة ذكية تجمع كل ما يحتاجه طالب البكالوريا في مكان واحد. 
+                    تلخيص فيديوهات، مخططات ذهنية، مراجعات شاملة، وأدوات دراسية متكاملة.
+                </p>
+
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+                    <a href="#features" class="btn-gradient px-8 py-4 rounded-2xl font-bold text-white text-lg shadow-xl shadow-brand-500/25 hover:shadow-brand-500/40 transition-all flex items-center justify-center gap-3">
+                        <i class="fas fa-rocket"></i>
+                        ابدأ رحلتك
+                    </a>
+                    <a href="#quiz" class="px-8 py-4 rounded-2xl font-bold text-gold-400 border-2 border-gold-500/30 hover:bg-gold-500/10 transition-all flex items-center justify-center gap-3">
+                        <i class="fas fa-brain"></i>
+                        اختبر معلوماتك
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+                    <div class="glass rounded-2xl p-4 text-center">
+                        <div class="text-3xl font-black text-brand-400 counter" data-target="12">0</div>
+                        <div class="text-xs text-slate-400 mt-1">أداة دراسية</div>
+                    </div>
+                    <div class="glass rounded-2xl p-4 text-center">
+                        <div class="text-3xl font-black text-cyan-400 counter" data-target="6">0</div>
+                        <div class="text-xs text-slate-400 mt-1">شعبة بكالوريا</div>
+                    </div>
+                    <div class="glass rounded-2xl p-4 text-center">
+                        <div class="text-3xl font-black text-gold-400 counter" data-target="100">0</div>
+                        <div class="text-xs text-slate-400 mt-1">% مجاني</div>
+                    </div>
+                    <div class="glass rounded-2xl p-4 text-center">
+                        <div class="text-3xl font-black text-emerald-400 counter" data-target="24">0</div>
+                        <div class="text-xs text-slate-400 mt-1">ساعة/يوم</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Tab: YouTube Summarizer -->
-        <div id="content-youtube" class="tab-content">
-            <div class="max-w-4xl mx-auto">
-                <!-- Input -->
-                <div class="glass-card rounded-2xl p-6 mb-6">
-                    <h2 class="text-xl font-bold mb-4 text-blue-400">
-                        <i class="fab fa-youtube mr-2 text-red-500"></i>
-                        أدخل رابط فيديو يوتيوب
+        <!-- Wave -->
+        <div class="wave">
+            <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="rgba(15, 23, 42, 0.6)"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="relative z-10 py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-1 rounded-full bg-brand-500/10 text-brand-400 text-sm font-semibold mb-4">المميزات</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">كل ما تحتاجه في <span class="text-brand-400">مكان واحد</span></h2>
+                <p class="text-slate-400 max-w-xl mx-auto">أدوات متكاملة صممت خصيصاً لمساعدتك على التفوق في البكالوريا</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                
+                <!-- Feature 1 -->
+                <div class="glass-card rounded-3xl p-8 group cursor-pointer" onclick="goTo('youtube-summarizer.html')">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-red-500/20 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fab fa-youtube text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">تلخيص فيديوهات يوتيوب</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        أدخل رابط أي فيديو تعليمي واحصل على ملخص ذكي بأنماط متعددة: مفصل، مختصر، نقاط رئيسية، أو ملخص دراسي.
+                    </p>
+                    <div class="flex items-center text-brand-400 text-sm font-semibold group-hover:gap-2 transition-all">
+                        <span>جرب الآن</span>
+                        <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card rounded-3xl p-8 group cursor-pointer" onclick="goTo('mindmap.html')">
+                    <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-purple-500/20 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-project-diagram text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">مخطط ذهني تفاعلي</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        حوّل أي نص لمخطط ذهني بصري جميل. مثالي لمراجعة الدروس وتنظيم الأفكار قبل الامتحان.
+                    </p>
+                    <div class="flex items-center text-purple-400 text-sm font-semibold group-hover:gap-2 transition-all">
+                        <span>أنشئ مخططك</span>
+                        <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card rounded-3xl p-8 group cursor-pointer" onclick="goTo('bac-reviews.html')">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-book-open text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">مراجعات البكالوريا</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        مراجعات شاملة لجميع شعب البكالوريا: علوم، آداب، تقني رياضي، تسيير واقتصاد، لغات، وآداب عربية.
+                    </p>
+                    <div class="flex items-center text-blue-400 text-sm font-semibold group-hover:gap-2 transition-all">
+                        <span>ابدأ المراجعة</span>
+                        <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass-card rounded-3xl p-8 group cursor-pointer" onclick="goTo('tools.html')">
+                    <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-tools text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">أدوات دراسية</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        مؤقت بومودورو، حاسبة علمية، ملاحظات سريعة، محول وحدات، وحاسبة معدل — كلها في صفحة واحدة.
+                    </p>
+                    <div class="flex items-center text-emerald-400 text-sm font-semibold group-hover:gap-2 transition-all">
+                        <span>استكشف الأدوات</span>
+                        <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="glass-card rounded-3xl p-8 group cursor-pointer" onclick="goTo('pdf-generator.html')">
+                    <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-700 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-file-pdf text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">تصدير PDF</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        حوّل ملخصاتك ومخططاتك لملفات PDF احترافية جاهزة للطباعة أو المشاركة مع زملائك.
+                    </p>
+                    <div class="flex items-center text-orange-400 text-sm font-semibold group-hover:gap-2 transition-all">
+                        <span>صدّر ملفك</span>
+                        <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="glass-card rounded-3xl p-8 group cursor-pointer" onclick="goTo('history.html')">
+                    <div class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-history text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">سجل التلخيصات</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        يحفظ جميع تلخيصاتك تلقائياً في المتصفح. ارجع لها في أي وقت بدون الحاجة لإعادة الاستخراج.
+                    </p>
+                    <div class="flex items-center text-cyan-400 text-sm font-semibold group-hover:gap-2 transition-all">
+                        <span>عرض السجل</span>
+                        <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Branches Section -->
+    <section id="branches" class="relative z-10 py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-1 rounded-full bg-gold-500/10 text-gold-400 text-sm font-semibold mb-4">الشعب</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">غطّي <span class="text-gold-400">كل الشعب</span></h2>
+                <p class="text-slate-400 max-w-xl mx-auto">محتوى مخصص لكل شعبة بكالوريا جزائرية</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
+                <div class="glass-card rounded-2xl p-6 text-center cursor-pointer hover:bg-blue-500/10" onclick="goTo('bac-reviews.html#science')">
+                    <i class="fas fa-flask text-blue-400 text-3xl mb-3"></i>
+                    <h4 class="font-bold text-white text-sm">علوم</h4>
+                </div>
+                <div class="glass-card rounded-2xl p-6 text-center cursor-pointer hover:bg-pink-500/10" onclick="goTo('bac-reviews.html#literature')">
+                    <i class="fas fa-book-open text-pink-400 text-3xl mb-3"></i>
+                    <h4 class="font-bold text-white text-sm">آداب</h4>
+                </div>
+                <div class="glass-card rounded-2xl p-6 text-center cursor-pointer hover:bg-green-500/10" onclick="goTo('bac-reviews.html#tech')">
+                    <i class="fas fa-laptop-code text-green-400 text-3xl mb-3"></i>
+                    <h4 class="font-bold text-white text-sm">تقني</h4>
+                </div>
+                <div class="glass-card rounded-2xl p-6 text-center cursor-pointer hover:bg-yellow-500/10" onclick="goTo('bac-reviews.html#management')">
+                    <i class="fas fa-chart-line text-yellow-400 text-3xl mb-3"></i>
+                    <h4 class="font-bold text-white text-sm">تسيير</h4>
+                </div>
+                <div class="glass-card rounded-2xl p-6 text-center cursor-pointer hover:bg-purple-500/10" onclick="goTo('bac-reviews.html#languages')">
+                    <i class="fas fa-language text-purple-400 text-3xl mb-3"></i>
+                    <h4 class="font-bold text-white text-sm">لغات</h4>
+                </div>
+                <div class="glass-card rounded-2xl p-6 text-center cursor-pointer hover:bg-emerald-500/10" onclick="goTo('bac-reviews.html#islamic')">
+                    <i class="fas fa-mosque text-emerald-400 text-3xl mb-3"></i>
+                    <h4 class="font-bold text-white text-sm">آداب عربية</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Section - Hidden Names -->
+    <section id="quiz" class="relative z-10 py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                
+                <!-- Quiz Header -->
+                <div class="text-center mb-12">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-sm font-semibold mb-4">
+                        <i class="fas fa-trophy"></i>
+                        <span>تحدي المعرفة</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                        هل أنت <span class="text-gold-400">مستعد</span> للتحدي؟
                     </h2>
+                    <p class="text-slate-400">
+                        أجب على 5 أسئلة في التاريخ الجزائري لكشف سر الموقع
+                    </p>
+                </div>
+
+                <!-- Quiz Container -->
+                <div id="quizContainer" class="glass rounded-3xl p-8 border border-gold-500/20">
                     
-                    <div class="flex flex-col md:flex-row gap-4 mb-4">
-                        <input type="text" id="youtubeUrl" 
-                            placeholder="https://www.youtube.com/watch?v=..." 
-                            class="flex-1 px-4 py-3 rounded-xl bg-slate-800 border border-slate-600 focus:border-blue-500 focus:outline-none text-white placeholder-slate-500 transition">
-                        <button onclick="extractTranscript()" class="summarize-btn px-8 py-3 rounded-xl font-bold text-white shadow-lg hover:shadow-blue-500/30 transition flex items-center justify-center gap-2">
-                            <i class="fas fa-magic"></i>
-                            استخراج النص
-                        </button>
-                    </div>
-                    
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <select id="summaryType" class="px-4 py-2 rounded-lg bg-slate-800 border border-slate-600 text-white focus:outline-none">
-                            <option value="detailed">تلخيص مفصل</option>
-                            <option value="brief">تلخيص مختصر</option>
-                            <option value="bullet">نقاط رئيسية</option>
-                            <option value="explain">شرح مبسط</option>
-                            <option value="study">ملخص دراسي</option>
-                        </select>
-                        
-                        <select id="language" class="px-4 py-2 rounded-lg bg-slate-800 border border-slate-600 text-white focus:outline-none">
-                            <option value="ar">العربية</option>
-                            <option value="fr">الفرنسية</option>
-                            <option value="en">الإنجليزية</option>
-                        </select>
-                        
-                        <button onclick="pasteFromClipboard()" class="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition text-sm">
-                            <i class="fas fa-paste mr-1"></i>لصق
-                        </button>
-                    </div>
-                    
-                    <!-- Proxy Warning -->
-                    <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 mb-4">
-                        <p class="text-yellow-400 text-sm">
-                            <i class="fas fa-exclamation-triangle mr-2"></i>
-                            <strong>ملاحظة مهمة:</strong> يستخدم الموقع CORS Proxy مجاني للوصول لنصوص يوتيوب. إذا فشل الاستخراج، جرب فيديو آخر أو استخدم الطريقة اليدوية (انظر الأسئلة الشائعة).
+                    <!-- Start Screen -->
+                    <div id="quizStart" class="text-center">
+                        <div class="w-24 h-24 bg-gradient-to-br from-gold-400 to-gold-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-gold-500/20">
+                            <i class="fas fa-crown text-white text-4xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">اختبار في التاريخ الجزائري</h3>
+                        <p class="text-slate-400 mb-8 max-w-md mx-auto">
+                            5 أسئلة متنوعة عن تاريخ الجزائر. إذا أجبت على 4 على الأقل بشكل صحيح، سيكشف لك الموقع عن سره!
                         </p>
+                        <button onclick="startQuiz()" class="btn-gradient px-10 py-4 rounded-2xl font-bold text-white text-lg shadow-xl">
+                            <i class="fas fa-play mr-2"></i>
+                            ابدأ الاختبار
+                        </button>
                     </div>
-                    
-                    <!-- Progress -->
-                    <div id="progressSection" class="hidden">
-                        <div class="flex items-center gap-4 mb-2">
-                            <div class="loader"></div>
-                            <div>
-                                <p class="font-semibold text-blue-400" id="progressText">جاري الاتصال...</p>
-                                <p class="text-sm text-slate-400" id="progressSub">جاري استخراج النص من يوتيوب</p>
-                            </div>
-                        </div>
-                        <div class="w-full bg-slate-700 rounded-full h-2">
-                            <div id="progressBar" class="bg-blue-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Results -->
-                <div id="resultsSection" class="hidden">
-                    <div class="glass-card rounded-2xl p-6 mb-6">
-                        <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
-                            <h3 class="text-lg font-bold text-blue-400">
-                                <i class="fas fa-file-alt mr-2"></i>النتيجة
-                            </h3>
-                            <div class="flex gap-2 flex-wrap">
-                                <button onclick="copyResult()" class="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition text-sm">
-                                    <i class="fas fa-copy mr-1"></i>نسخ
-                                </button>
-                                <button onclick="downloadPDF()" class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition text-sm">
-                                    <i class="fas fa-file-pdf mr-1"></i>PDF
-                                </button>
-                                <button onclick="downloadText()" class="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 transition text-sm">
-                                    <i class="fas fa-file-alt mr-1"></i>نص
-                                </button>
-                                <button onclick="generateMindMapFromSummary()" class="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 transition text-sm">
-                                    <i class="fas fa-project-diagram mr-1"></i>مخطط
-                                </button>
-                            </div>
+                    <!-- Question Screen -->
+                    <div id="quizQuestion" class="hidden">
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="text-sm text-slate-400">السؤال <span id="qCurrent" class="text-gold-400 font-bold">1</span> من <span id="qTotal">5</span></span>
+                            <span class="text-sm text-slate-400">النقاط: <span id="qScore" class="text-brand-400 font-bold">0</span></span>
                         </div>
                         
-                        <div id="resultContent" class="bg-slate-800 rounded-xl p-6 leading-relaxed text-slate-200 min-h-[200px] whitespace-pre-wrap"></div>
+                        <div class="w-full bg-slate-700 rounded-full h-2 mb-8">
+                            <div id="qProgress" class="bg-gold-500 h-2 rounded-full transition-all duration-500" style="width: 20%"></div>
+                        </div>
+
+                        <h3 id="qText" class="text-xl font-bold text-white mb-8 leading-relaxed"></h3>
                         
-                        <!-- Video Info -->
-                        <div id="videoInfo" class="mt-4 p-4 bg-slate-800/50 rounded-xl hidden">
-                            <div class="flex items-start gap-4">
-                                <img id="videoThumb" src="" alt="thumbnail" class="w-32 h-24 object-cover rounded-lg">
-                                <div>
-                                    <h4 id="videoTitle" class="font-bold text-white mb-1"></h4>
-                                    <p id="videoDuration" class="text-sm text-slate-400"></p>
+                        <div id="qOptions" class="space-y-3">
+                            <!-- Options injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Result Screen -->
+                    <div id="quizResult" class="hidden text-center quiz-reveal">
+                        <div id="resultIcon" class="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl"></div>
+                        <h3 id="resultTitle" class="text-3xl font-bold text-white mb-3"></h3>
+                        <p id="resultMessage" class="text-slate-400 mb-6 max-w-md mx-auto"></p>
+                        
+                        <!-- Hidden Names Reveal -->
+                        <div id="namesReveal" class="hidden mb-8">
+                            <div class="glass rounded-2xl p-8 border-2 border-gold-500/50 bg-gradient-to-b from-gold-500/5 to-transparent">
+                                <i class="fas fa-star text-gold-400 text-4xl mb-4 animate-bounce"></i>
+                                <p class="text-slate-300 mb-4">هذا الموقع صدقة جارية على روح:</p>
+                                <div class="space-y-3">
+                                    <div class="hidden-name text-3xl md:text-4xl" id="hiddenName1">الوالد الكريم</div>
+                                    <div class="hidden-name text-3xl md:text-4xl" id="hiddenName2">والدة الكريمة</div>
                                 </div>
+                                <p class="text-slate-400 text-sm mt-6 leading-relaxed">
+                                    "إذا مات ابن آدم انقطع عمله إلا من ثلاث: صدقة جارية، أو علم ينتفع به، أو ولد صالح يدعو له"
+                                    <br><span class="text-xs">رواه مسلم</span>
+                                </p>
+                                <p class="text-brand-400 text-sm mt-4">
+                                    <i class="fas fa-heart mr-1"></i>
+                                    وجميع المسلمين الأحياء والأموات
+                                </p>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Original Transcript -->
-                    <div class="glass-card rounded-2xl p-6">
-                        <h3 class="text-lg font-bold text-green-400 mb-4">
-                            <i class="fas fa-closed-captioning mr-2"></i>النص الأصلي مع التوقيت
-                        </h3>
-                        <div id="transcriptContainer" class="max-h-[400px] overflow-y-auto space-y-1"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Tab: Mind Map -->
-        <div id="content-mindmap" class="tab-content hidden">
-            <div class="max-w-5xl mx-auto">
-                <div class="glass-card rounded-2xl p-6 mb-6">
-                    <h2 class="text-xl font-bold mb-4 text-purple-400">
-                        <i class="fas fa-project-diagram mr-2"></i>
-                        المخطط الذهني التفاعلي
-                    </h2>
-                    
-                    <div class="flex flex-col md:flex-row gap-4 mb-4">
-                        <textarea id="mindMapInput" rows="3" 
-                            placeholder="أدخل النص لتحويله إلى مخطط ذهني..." 
-                            class="flex-1 px-4 py-3 rounded-xl bg-slate-800 border border-slate-600 focus:border-purple-500 focus:outline-none text-white placeholder-slate-500 resize-none"></textarea>
-                        <div class="flex flex-col gap-2">
-                            <button onclick="generateMindMap()" class="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold transition">
-                                <i class="fas fa-magic mr-2"></i>إنشاء
+                        <div class="flex gap-3 justify-center">
+                            <button onclick="restartQuiz()" class="px-6 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white transition">
+                                <i class="fas fa-redo mr-2"></i>إعادة المحاولة
                             </button>
-                            <button onclick="downloadMindMap()" class="px-6 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white transition">
-                                <i class="fas fa-download mr-2"></i>تحميل صورة
+                            <button onclick="goTo('youtube-summarizer.html')" class="px-6 py-3 rounded-xl btn-gradient text-white transition">
+                                <i class="fas fa-rocket mr-2"></i>استكشف الموقع
                             </button>
                         </div>
                     </div>
-                    
-                    <div class="flex gap-2 mb-4 flex-wrap">
-                        <button onclick="setMindMapTemplate('bac')" class="px-3 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs transition">قالب بكالوريا</button>
-                        <button onclick="setMindMapTemplate('science')" class="px-3 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs transition">علوم</button>
-                        <button onclick="setMindMapTemplate('literature')" class="px-3 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs transition">آداب</button>
-                    </div>
-                </div>
-                
-                <div id="mindMapContainer" class="glass-card rounded-2xl p-8 min-h-[500px] relative overflow-auto bg-slate-900/50">
-                    <div class="text-center text-slate-500 mt-20">
-                        <i class="fas fa-project-diagram text-6xl mb-4 opacity-30"></i>
-                        <p>أدخل نصاً لإنشاء مخطط ذهني تفاعلي</p>
-                    </div>
+
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Tab: Bac -->
-        <div id="content-bac" class="tab-content hidden">
-            <div class="max-w-5xl mx-auto">
-                <h2 class="text-2xl font-bold mb-6 text-center text-blue-400">
-                    <i class="fas fa-graduation-cap mr-2"></i>
-                    مراجعات البكالوريا الجزائرية
-                </h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                    <div class="bac-card rounded-2xl p-6 cursor-pointer hover:scale-105 transition" onclick="showBacSubject('science')">
-                        <div class="w-14 h-14 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4">
-                            <i class="fas fa-flask text-blue-400 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">شعبة العلوم</h3>
-                        <p class="text-slate-400 text-sm">رياضيات، فيزياء، علوم طبيعية</p>
+    <!-- Tools Preview -->
+    <section id="tools" class="relative z-10 py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-semibold mb-4">الأدوات</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">أدواتك <span class="text-emerald-400">في متناول يدك</span></h2>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div class="glass rounded-2xl p-6 text-center hover:bg-orange-500/10 transition cursor-pointer" onclick="goTo('tools.html#pomodoro')">
+                    <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-clock text-orange-400 text-xl"></i>
                     </div>
-                    
-                    <div class="bac-card rounded-2xl p-6 cursor-pointer hover:scale-105 transition" onclick="showBacSubject('literature')">
-                        <div class="w-14 h-14 bg-pink-500/20 rounded-xl flex items-center justify-center mb-4">
-                            <i class="fas fa-book-open text-pink-400 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">شعبة الآداب</h3>
-                        <p class="text-slate-400 text-sm">فلسفة، تاريخ، جغرافيا، لغات</p>
-                    </div>
-                    
-                    <div class="bac-card rounded-2xl p-6 cursor-pointer hover:scale-105 transition" onclick="showBacSubject('tech')">
-                        <div class="w-14 h-14 bg-green-500/20 rounded-xl flex items-center justify-center mb-4">
-                            <i class="fas fa-laptop-code text-green-400 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">شعبة تقني رياضي</h3>
-                        <p class="text-slate-400 text-sm">تكنولوجيا، هندسة، رياضيات تطبيقية</p>
-                    </div>
-                    
-                    <div class="bac-card rounded-2xl p-6 cursor-pointer hover:scale-105 transition" onclick="showBacSubject('management')">
-                        <div class="w-14 h-14 bg-yellow-500/20 rounded-xl flex items-center justify-center mb-4">
-                            <i class="fas fa-chart-line text-yellow-400 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">شعبة تسيير واقتصاد</h3>
-                        <p class="text-slate-400 text-sm">اقتصاد، محاسبة، قانون تجاري</p>
-                    </div>
-                    
-                    <div class="bac-card rounded-2xl p-6 cursor-pointer hover:scale-105 transition" onclick="showBacSubject('languages')">
-                        <div class="w-14 h-14 bg-purple-500/20 rounded-xl flex items-center justify-center mb-4">
-                            <i class="fas fa-language text-purple-400 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">شعبة لغات أجنبية</h3>
-                        <p class="text-slate-400 text-sm">إنجليزية، فرنسية، إسبانية، ألمانية</p>
-                    </div>
-                    
-                    <div class="bac-card rounded-2xl p-6 cursor-pointer hover:scale-105 transition" onclick="showBacSubject('islamic')">
-                        <div class="w-14 h-14 bg-emerald-500/20 rounded-xl flex items-center justify-center mb-4">
-                            <i class="fas fa-mosque text-emerald-400 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">شعبة آداب عربية</h3>
-                        <p class="text-slate-400 text-sm">شريعة، لغة عربية، ثقافة إسلامية</p>
-                    </div>
+                    <h4 class="font-bold text-white text-sm">بومودورو</h4>
                 </div>
-                
-                <div id="bacContent" class="hidden">
-                    <div class="glass-card rounded-2xl p-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 id="bacTitle" class="text-xl font-bold text-blue-400"></h3>
-                            <button onclick="closeBacContent()" class="text-slate-400 hover:text-white">
-                                <i class="fas fa-times text-xl"></i>
-                            </button>
-                        </div>
-                        <div id="bacMaterial" class="space-y-4"></div>
+                <div class="glass rounded-2xl p-6 text-center hover:bg-cyan-500/10 transition cursor-pointer" onclick="goTo('tools.html#calculator')">
+                    <div class="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-calculator text-cyan-400 text-xl"></i>
                     </div>
+                    <h4 class="font-bold text-white text-sm">حاسبة</h4>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center hover:bg-green-500/10 transition cursor-pointer" onclick="goTo('tools.html#notes')">
+                    <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-sticky-note text-green-400 text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-white text-sm">ملاحظات</h4>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center hover:bg-yellow-500/10 transition cursor-pointer" onclick="goTo('tools.html#gpa')">
+                    <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-chart-pie text-yellow-400 text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-white text-sm">حاسبة معدل</h4>
                 </div>
             </div>
         </div>
-
-        <!-- Tab: Tools -->
-        <div id="content-tools" class="tab-content hidden">
-            <div class="max-w-4xl mx-auto">
-                <h2 class="text-2xl font-bold mb-6 text-center text-blue-400">
-                    <i class="fas fa-toolbox mr-2"></i>
-                    أدوات مساعدة للطالب
-                </h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Pomodoro -->
-                    <div class="glass-card rounded-2xl p-6">
-                        <h3 class="text-lg font-bold mb-4 text-orange-400">
-                            <i class="fas fa-clock mr-2"></i>مؤقت بومودورو
-                        </h3>
-                        <div class="text-center mb-4">
-                            <div id="timerDisplay" class="text-5xl font-bold font-mono mb-4 text-white">25:00</div>
-                            <div class="flex justify-center gap-2">
-                                <button onclick="startTimer()" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition">بدء</button>
-                                <button onclick="pauseTimer()" class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 rounded-lg transition">إيقاف</button>
-                                <button onclick="resetTimer()" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition">إعادة</button>
-                            </div>
-                        </div>
-                        <p class="text-sm text-slate-400 text-center">25 دقيقة دراسة + 5 دقيقة راحة</p>
-                    </div>
-                    
-                    <!-- Calculator -->
-                    <div class="glass-card rounded-2xl p-6">
-                        <h3 class="text-lg font-bold mb-4 text-cyan-400">
-                            <i class="fas fa-calculator mr-2"></i>حاسبة علمية
-                        </h3>
-                        <input type="text" id="calcInput" readonly 
-                            class="w-full px-4 py-3 mb-4 rounded-lg bg-slate-800 text-right text-xl font-mono text-white">
-                        <div class="grid grid-cols-4 gap-2">
-                            <button onclick="calc('C')" class="p-3 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition">C</button>
-                            <button onclick="calc('(')" class="p-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition">(</button>
-                            <button onclick="calc(')')" class="p-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition">)</button>
-                            <button onclick="calc('/')" class="p-3 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition">÷</button>
-                            <button onclick="calc('7')" class="p-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition">7</button>
-                            <button onclick="calc('8')" class="p-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition">8</button>
-                            <button onclick="calc('9')" class="p-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition">9</button>
-                            <button onclick="calc('*')" class="p-3 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition">×</button>
-                            <button onclick="calc('4')" class="p-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition">4</button>
-                            <button onclick="calc('5')" class="p-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition">5</button>
-                            <button onclick="calc('6')" class="p-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition">6</button>
-                            <button onclick="calc('-')" class="p-3 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition">-</button>
-                            <button onclick="calc('1')" class="p-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition">1</button>
-                            <button onclick="calc('2')" class="p-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition">2</button>
-                            <button onclick="calc('3')" class="p-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition">3</button>
-                            <button onclick="calc('+')" class="p-3 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition">+</button>
-                            <button onclick="calc('0')" class="p-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition col-span-2">0</button>
-                            <button onclick="calc('.')" class="p-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition">.</button>
-                            <button onclick="calc('=')" class="p-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">=</button>
-                        </div>
-                    </div>
-                    
-                    <!-- Notes -->
-                    <div class="glass-card rounded-2xl p-6 md:col-span-2">
-                        <h3 class="text-lg font-bold mb-4 text-green-400">
-                            <i class="fas fa-sticky-note mr-2"></i>ملاحظات سريعة
-                        </h3>
-                        <div class="flex gap-2 mb-4">
-                            <input type="text" id="noteTitle" placeholder="عنوان الملاحظة" 
-                                class="flex-1 px-4 py-2 rounded-lg bg-slate-800 border border-slate-600 focus:border-green-500 focus:outline-none text-white">
-                            <button onclick="saveNote()" class="px-6 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition">
-                                <i class="fas fa-save mr-1"></i>حفظ
-                            </button>
-                        </div>
-                        <textarea id="noteContent" rows="4" placeholder="اكتب ملاحظاتك هنا..." 
-                            class="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-600 focus:border-green-500 focus:outline-none text-white resize-none mb-4"></textarea>
-                        
-                        <div id="notesList" class="space-y-2 max-h-60 overflow-y-auto">
-                            <p class="text-slate-500 text-center text-sm">لا توجد ملاحظات بعد</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Unit Converter -->
-                    <div class="glass-card rounded-2xl p-6">
-                        <h3 class="text-lg font-bold mb-4 text-purple-400">
-                            <i class="fas fa-exchange-alt mr-2"></i>محول الوحدات
-                        </h3>
-                        <select id="convertType" onchange="updateConverter()" class="w-full px-4 py-2 mb-4 rounded-lg bg-slate-800 border border-slate-600 text-white">
-                            <option value="length">الطول</option>
-                            <option value="weight">الوزن</option>
-                            <option value="temp">الحرارة</option>
-                            <option value="time">الوقت</option>
-                        </select>
-                        <div class="flex gap-2 items-center mb-4">
-                            <input type="number" id="convertInput" oninput="convert()" 
-                                class="flex-1 px-4 py-2 rounded-lg bg-slate-800 border border-slate-600 text-white text-center">
-                            <select id="fromUnit" onchange="convert()" class="px-3 py-2 rounded-lg bg-slate-700 text-white text-sm"></select>
-                        </div>
-                        <div class="text-center text-2xl mb-4">=</div>
-                        <div class="flex gap-2 items-center">
-                            <input type="text" id="convertOutput" readonly 
-                                class="flex-1 px-4 py-2 rounded-lg bg-slate-900 border border-slate-600 text-green-400 text-center font-bold">
-                            <select id="toUnit" onchange="convert()" class="px-3 py-2 rounded-lg bg-slate-700 text-white text-sm"></select>
-                        </div>
-                    </div>
-                    
-                    <!-- GPA Calculator -->
-                    <div class="glass-card rounded-2xl p-6">
-                        <h3 class="text-lg font-bold mb-4 text-yellow-400">
-                            <i class="fas fa-chart-pie mr-2"></i>حاسبة المعدل
-                        </h3>
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="subjectName" placeholder="المادة" 
-                                class="flex-1 px-3 py-2 rounded-lg bg-slate-800 border border-slate-600 text-white text-sm">
-                            <input type="number" id="subjectGrade" placeholder="العلامة" max="20" 
-                                class="w-24 px-3 py-2 rounded-lg bg-slate-800 border border-slate-600 text-white text-sm text-center">
-                            <input type="number" id="subjectCoef" placeholder="المعامل" value="1" 
-                                class="w-20 px-3 py-2 rounded-lg bg-slate-800 border border-slate-600 text-white text-sm text-center">
-                            <button onclick="addSubject()" class="px-3 py-2 bg-yellow-600 hover:bg-yellow-700 rounded-lg transition">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        <div id="subjectsList" class="space-y-1 mb-4 max-h-32 overflow-y-auto"></div>
-                        <div class="border-t border-slate-600 pt-2">
-                            <div class="flex justify-between items-center">
-                                <span class="text-slate-400">المعدل:</span>
-                                <span id="gpaResult" class="text-2xl font-bold text-yellow-400">0.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab: History -->
-        <div id="content-history" class="tab-content hidden">
-            <div class="max-w-4xl mx-auto">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-blue-400">
-                        <i class="fas fa-history mr-2"></i>
-                        سجل التلخيصات
-                    </h2>
-                    <button onclick="clearHistory()" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition text-sm">
-                        <i class="fas fa-trash mr-1"></i>مسح السجل
-                    </button>
-                </div>
-                
-                <div id="historyList" class="space-y-4">
-                    <div class="text-center text-slate-500 py-12">
-                        <i class="fas fa-inbox text-5xl mb-4 opacity-30"></i>
-                        <p>لا توجد تلخيصات في السجل بعد</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </main>
+    </section>
 
     <!-- Footer -->
-    <footer class="glass mt-12 border-t border-blue-500/20 relative z-10">
-        <div class="container mx-auto px-4 py-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer class="relative z-10 glass border-t border-brand-500/10 mt-20">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                 <div>
-                    <h4 class="font-bold text-lg mb-3 text-blue-400">عن الموقع</h4>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-700 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white">مساعد البكالوريا</h4>
+                            <p class="text-xs text-slate-500">صدقة جارية 2026</p>
+                        </div>
+                    </div>
                     <p class="text-slate-400 text-sm leading-relaxed">
-                        مساعد البكالوريا هو أداة مجانية مخصصة لطلاب البكالوريا الجزائريين لمساعدتهم في الدراسة والمراجعة بشكل ذكي وفعال.
+                        منصة مجانية بالكامل لمساعدة طلاب البكالوريا الجزائريين على تحقيق التفوق والنجاح.
                     </p>
                 </div>
                 <div>
-                    <h4 class="font-bold text-lg mb-3 text-blue-400">روابط مفيدة</h4>
-                    <ul class="space-y-2 text-sm text-slate-400">
-                        <li><a href="#" onclick="showBacSubject('science')" class="hover:text-blue-400 transition">شعبة العلوم</a></li>
-                        <li><a href="#" onclick="showBacSubject('literature')" class="hover:text-blue-400 transition">شعبة الآداب</a></li>
-                        <li><a href="#" onclick="switchTab('tools')" class="hover:text-blue-400 transition">أدوات الدراسة</a></li>
+                    <h4 class="font-bold text-white mb-4">روابط سريعة</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#features" class="text-slate-400 hover:text-brand-400 transition">المميزات</a></li>
+                        <li><a href="#branches" class="text-slate-400 hover:text-brand-400 transition">الشعب</a></li>
+                        <li><a href="#quiz" class="text-slate-400 hover:text-gold-400 transition">تحدي المعرفة</a></li>
+                        <li><a href="#tools" class="text-slate-400 hover:text-brand-400 transition">الأدوات</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-bold text-lg mb-3 text-blue-400">صدقة جارية</h4>
-                    <p class="text-slate-400 text-sm leading-relaxed">
-                        "إذا مات ابن آدم انقطع عمله إلا من ثلاث: صدقة جارية، أو علم ينتفع به، أو ولد صالح يدعو له"
-                        <br><span class="text-xs mt-1 block">رواه مسلم</span>
+                    <h4 class="font-bold text-white mb-4">صدقة جارية</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-3">
+                        "مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ طَرِيقًا إِلَى الْجَنَّةِ"
                     </p>
+                    <p class="text-xs text-slate-500">رواه مسلم</p>
                 </div>
             </div>
-            <div class="border-t border-slate-700 mt-8 pt-4 text-center text-slate-500 text-sm">
-                <p>مساعد البكالوريا 2026 - صدقة جارية لجميع الطلاب</p>
+            <div class="border-t border-slate-700/50 pt-6 text-center">
+                <p class="text-slate-500 text-sm">
+                    مساعد البكالوريا 2026 — صدقة جارية لجميع الطلاب
+                    <span class="hidden-trigger" data-secret="2" style="opacity:0;cursor:pointer;">.</span>
+                </p>
             </div>
         </div>
     </footer>
 
-    <!-- Konami Code -->
-    <div class="konami-code" id="konami">↑↑↓↓←→←→BA</div>
-
-    <!-- Easter Egg Modal -->
-    <div id="easterEggModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
-        <div class="glass-card rounded-2xl p-8 max-w-md w-full text-center border-2 border-yellow-500/50">
-            <i class="fas fa-star text-yellow-400 text-5xl mb-4 animate-pulse"></i>
-            <h3 class="text-2xl font-bold text-yellow-400 mb-4">🎉 اكتشفت السر!</h3>
-            <p class="text-slate-300 mb-6">
-                هذا الموقع صدقة جارية على روح:<br>
-                <span class="text-yellow-400 font-bold text-lg">والديّ الكريمين</span><br>
-                وجميع المسلمين الأحياء والأموات
+    <!-- Hidden Names Modal (Alternative Trigger) -->
+    <div id="secretModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[100] hidden flex items-center justify-center p-4">
+        <div class="glass rounded-3xl p-8 max-w-md w-full text-center border-2 border-gold-500/50 quiz-reveal">
+            <i class="fas fa-gift text-gold-400 text-5xl mb-6 animate-bounce"></i>
+            <h3 class="text-2xl font-bold text-gold-400 mb-4">🎉 اكتشفت السر!</h3>
+            <p class="text-slate-300 mb-6 leading-relaxed">
+                هذا الموقع صدقة جارية على روح:
             </p>
-            <p class="text-sm text-slate-400 mb-6">
-                "مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ طَرِيقًا إِلَى الْجَنَّةِ"
-            </p>
-            <button onclick="closeEasterEgg()" class="px-8 py-3 bg-yellow-600 hover:bg-yellow-700 rounded-xl font-bold transition">
-                بارك الله فيك
-            </button>
-        </div>
-    </div>
-
-    <!-- About Modal -->
-    <div id="aboutModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
-        <div class="glass-card rounded-2xl p-8 max-w-lg w-full">
-            <h3 class="text-2xl font-bold text-blue-400 mb-4">عن مساعد البكالوريا</h3>
-            <div class="space-y-3 text-slate-300 text-sm leading-relaxed">
-                <p>موقع متكامل لمساعدة طلاب البكالوريا الجزائريين يتضمن:</p>
-                <ul class="list-disc list-inside space-y-1 mr-4">
-                    <li>استخراج نصوص فيديوهات يوتيوب وتحويلها لملخصات</li>
-                    <li>إنشاء مخططات ذهنية تفاعلية</li>
-                    <li>مراجعات شاملة لجميع الشعب</li>
-                    <li>أدوات دراسية (مؤقت، حاسبة، ملاحظات)</li>
-                    <li>حفظ السجل محلياً في المتصفح</li>
-                </ul>
-                <div class="bg-blue-500/10 rounded-lg p-4 mt-4 border border-blue-500/30">
-                    <p class="font-bold text-blue-400 mb-2">💡 كيفية الاستخدام:</p>
-                    <p>انسخ رابط أي فيديو يوتيوب educational والصقه في حقل الإدخال. يستخدم الموقع CORS Proxy مجاني للوصول للنصوص.</p>
-                    <p class="mt-2 text-yellow-400">⚠️ إذا فشل الاستخراج، يمكنك نسخ النص يدوياً من يوتيوب (ثلاث نقاط → Show transcript) ولصقه في "مخطط ذهني" للتلخيص.</p>
-                </div>
+            <div class="space-y-3 mb-6">
+                <div class="hidden-name text-3xl" id="modalName1">الوالد الكريم</div>
+                <div class="hidden-name text-3xl" id="modalName2">والدة الكريمة</div>
             </div>
-            <button onclick="closeAbout()" class="mt-6 w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-bold transition">
-                فهمت
+            <p class="text-slate-400 text-sm mb-6">
+                "إذا مات ابن آدم انقطع عمله إلا من ثلاث: صدقة جارية، أو علم ينتفع به، أو ولد صالح يدعو له"
+            </p>
+            <button onclick="closeSecretModal()" class="px-8 py-3 bg-gold-600 hover:bg-gold-700 rounded-xl font-bold text-white transition">
+                <i class="fas fa-heart mr-2"></i>بارك الله فيك
             </button>
         </div>
     </div>
 
+    <!-- JavaScript -->
     <script>
-        // ==================== المتغيرات العامة ====================
-        let currentTranscript = '';
-        let currentVideoInfo = {};
-        let timerInterval;
-        let timerSeconds = 1500;
-        let isTimerRunning = false;
-        let subjects = [];
-        let konamiCode = [];
-        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        // ==================== CONFIGURATION ====================
+        // ضع الاسمين هنا - سيتم كشفهما بعد اجتياز الكويز
+        const HIDDEN_NAME_1 = "محمد";  // ← غيّر هذا للاسم الأول
+        const HIDDEN_NAME_2 = "فاطمة"; // ← غيّر هذا للاسم الثاني
         
-        // ==================== تهيئة ====================
+        // ==================== QUIZ DATA ====================
+        const quizQuestions = [
+            {
+                question: "في أي سنة اندلعت الثورة التحريرية الجزائرية؟",
+                options: ["1952", "1954", "1956", "1960"],
+                correct: 1,
+                explanation: "اندلعت الثورة التحريرية الجزائرية في 1 نوفمبر 1954."
+            },
+            {
+                question: "من هو مؤسس الدولة الزيانية في الجزائر؟",
+                options: ["عبد المؤمن", "يوسف بن تاشفين", "أبو حمو موسى الأول", "المنصور بن أبي عامر"],
+                correct: 2,
+                explanation: "أبو حمو موسى الأول هو مؤسس الدولة الزيانية في الجزائر."
+            },
+            {
+                question: "في أي سنة استقلت الجزائر؟",
+                options: ["1960", "1962", "1964", "1958"],
+                correct: 1,
+                explanation: "استقلت الجزائر في 5 جويلية 1962."
+            },
+            {
+                question: "من هو بطل معركة الجزائر (1957)؟",
+                options: ["العقيد عميروش", "علي لابوانت", "العقيد لطفي", "العقيد عميروش وعلي لابوانت"],
+                correct: 3,
+                explanation: "شارك العقيد عميروش وعلي لابوانت في معركة الجزائر."
+            },
+            {
+                question: "ما هي أقدم مدينة في الجزائر؟",
+                options: ["الجزائر العاصمة", "قسنطينة", "تيبازة", " Béjaïa"],
+                correct: 2,
+                explanation: "تيبازة هي من أقدم المدن الجزائرية، يعود تاريخها للعهد الفينيقي."
+            }
+        ];
+
+        // ==================== STATE ====================
+        let currentQuestion = 0;
+        let score = 0;
+        let quizStarted = false;
+
+        // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', () => {
-            createParticles();
-            loadHistory();
-            loadNotes();
-            updateConverter();
-            
-            // Konami Code
-            document.addEventListener('keydown', (e) => {
-                konamiCode.push(e.key);
-                if (konamiCode.length > 10) konamiCode.shift();
-                if (konamiCode.join(',') === konamiSequence.join(',')) {
-                    showEasterEgg();
-                }
-            });
-            
-            // Hidden dot click
-            let sadaqaClicks = 0;
-            document.querySelector('[data-s="1"]').addEventListener('click', () => {
-                sadaqaClicks++;
-                if (sadaqaClicks >= 5) {
-                    showEasterEgg();
-                    sadaqaClicks = 0;
-                }
-            });
+            animateCounters();
+            setupEasterEggs();
+            typewriterEffect();
         });
-        
-        // ==================== تأثيرات ====================
-        function createParticles() {
-            const container = document.getElementById('particles');
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (10 + Math.random() * 20) + 's';
-                container.appendChild(particle);
-            }
-        }
-        
-        // ==================== التبويبات ====================
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById('content-' + tabName).classList.remove('hidden');
-            document.getElementById('tab-' + tabName).classList.add('active');
-        }
-        
-        // ==================== استخراج نص يوتيوب - الطريقة الحقيقية ====================
-        async function extractTranscript() {
-            const url = document.getElementById('youtubeUrl').value.trim();
-            if (!url) {
-                alert('الرجاء إدخال رابط الفيديو');
-                return;
-            }
-            
-            const videoId = extractVideoId(url);
-            if (!videoId) {
-                alert('رابط يوتيوب غير صالح');
-                return;
-            }
-            
-            document.getElementById('progressSection').classList.remove('hidden');
-            document.getElementById('resultsSection').classList.add('hidden');
-            updateProgress(10, 'جاري جلب معلومات الفيديو...');
-            
-            try {
-                // الطريقة 1: استخدام CORS Proxy مجاني
-                const proxyUrls = [
-                    'https://api.allorigins.win/raw?url=',
-                    'https://corsproxy.io/?',
-                    'https://api.codetabs.com/v1/proxy?quest='
-                ];
+
+        // ==================== ANIMATIONS ====================
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
                 
-                let pageHtml = null;
-                let usedProxy = '';
-                
-                // جرب كل بروكسي حتى ينجح أحدهم
-                for (const proxy of proxyUrls) {
-                    try {
-                        updateProgress(20 + Math.random() * 10, `جاري الاتصال عبر البروكسي...`);
-                        const response = await fetch(proxy + encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`), {
-                            method: 'GET',
-                            headers: { 'Accept': 'text/html' }
-                        });
-                        
-                        if (response.ok) {
-                            pageHtml = await response.text();
-                            usedProxy = proxy;
-                            break;
-                        }
-                    } catch (e) {
-                        console.log('Proxy failed:', proxy, e.message);
-                        continue;
+                const update = () => {
+                    current += step;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current);
+                        requestAnimationFrame(update);
+                    } else {
+                        counter.textContent = target + (target === 100 ? '%' : target === 24 ? '/7' : '+');
                     }
-                }
-                
-                if (!pageHtml) {
-                    throw new Error('جميع البروكسيات فشلت. جرب فيديو آخر أو استخدم الطريقة اليدوية.');
-                }
-                
-                updateProgress(50, 'جاري استخراج النصوص...');
-                
-                // استخراج ytInitialPlayerResponse من الصفحة
-                let playerResponse = null;
-                
-                // Method 1: Find ytInitialPlayerResponse
-                const playerMatch = pageHtml.match(/ytInitialPlayerResponse\s*=\s*({.+?});/);
-                if (playerMatch) {
-                    try {
-                        playerResponse = JSON.parse(playerMatch[1]);
-                    } catch (e) {
-                        console.log('Parse error, trying alternative...');
-                    }
-                }
-                
-                // Method 2: Find in script tags
-                if (!playerResponse) {
-                    const scripts = pageHtml.match(/<script[^>]*>([\s\S]*?)<\/script>/g) || [];
-                    for (const script of scripts) {
-                        const match = script.match(/ytInitialPlayerResponse\s*=\s*({.+?});/);
-                        if (match) {
-                            try {
-                                playerResponse = JSON.parse(match[1]);
-                                break;
-                            } catch (e) {}
-                        }
-                    }
-                }
-                
-                if (!playerResponse) {
-                    throw new Error('لم يتم العثور على بيانات الفيديو. قد يكون الفيديو خاصاً أو محظوراً.');
-                }
-                
-                // استخراج معلومات الفيديو
-                const videoDetails = playerResponse.videoDetails || {};
-                const title = videoDetails.title || 'فيديو يوتيوب';
-                const duration = formatDuration(videoDetails.lengthSeconds || 0);
-                
-                currentVideoInfo = {
-                    id: videoId,
-                    title,
-                    duration,
-                    thumbnail: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`
                 };
                 
-                // استخراج الترجمات
-                const captions = playerResponse.captions;
-                if (!captions || !captions.playerCaptionsTracklistRenderer || !captions.playerCaptionsTracklistRenderer.captionTracks) {
-                    throw new Error('هذا الفيديو لا يحتوي على ترجمات متاحة. جرب فيديو آخر.');
-                }
-                
-                const captionTracks = captions.playerCaptionsTracklistRenderer.captionTracks;
-                const lang = document.getElementById('language').value;
-                
-                // اختر أفضل ترجمة
-                let selectedTrack = captionTracks.find(t => t.vssId === `.${lang}`) ||
-                                   captionTracks.find(t => t.vssId === `a.${lang}`) ||
-                                   captionTracks.find(t => t.languageCode === lang) ||
-                                   captionTracks[0];
-                
-                updateProgress(70, 'جاري تحميل النص الكامل...');
-                
-                // جلب النص من رابط الترجمة
-                const captionUrl = selectedTrack.baseUrl + '&fmt=json3';
-                const captionProxyUrl = usedProxy + encodeURIComponent(captionUrl);
-                
-                const captionResponse = await fetch(captionProxyUrl);
-                if (!captionResponse.ok) {
-                    throw new Error('فشل في تحميل النص. جرب فيديو آخر.');
-                }
-                
-                const captionData = await captionResponse.json();
-                
-                if (!captionData.events || captionData.events.length === 0) {
-                    throw new Error('الترجمة فارغة.');
-                }
-                
-                // معالجة النص
-                let fullText = '';
-                const transcriptLines = [];
-                
-                captionData.events.forEach(event => {
-                    if (event.segs) {
-                        const text = event.segs.map(seg => seg.utf8 || '').join(' ')
-                            .replace(/\n/g, ' ')
-                            .replace(/♪|'|"|\.{2,}|\<[\s\S]*?\>|\{[\s\S]*?\}|\[[\s\S]*?\]/g, '')
-                            .trim();
-                        
-                        if (text) {
-                            const startTime = formatTime(event.tStartMs / 1000);
-                            fullText += text + ' ';
-                            transcriptLines.push({ time: startTime, text });
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            update();
+                            observer.unobserve(entry.target);
                         }
-                    }
+                    });
                 });
-                
-                currentTranscript = fullText.trim();
-                
-                updateProgress(90, 'جاري تلخيص النص...');
-                
-                // توليد التلخيص
-                const summaryType = document.getElementById('summaryType').value;
-                const summary = generateSummary(currentTranscript, summaryType);
-                
-                // عرض النتائج
-                displayResult(summary);
-                displayTranscript(transcriptLines);
-                
-                // حفظ في السجل
-                saveToHistory(summary, title, videoId);
-                
-                updateProgress(100, 'اكتمل!');
-                setTimeout(() => {
-                    document.getElementById('progressSection').classList.add('hidden');
-                    document.getElementById('resultsSection').classList.remove('hidden');
-                }, 500);
-                
-            } catch (error) {
-                console.error(error);
-                document.getElementById('progressSection').classList.add('hidden');
-                
-                // عرض رسالة خطأ مفص
+                observer.observe(counter);
+            });
+        }
+
+        function typewriterEffect() {
+            const text = "البكالوريا يبدأ هنا";
+            const element = document.getElementById('heroTypewriter');
+            let i = 0;
+            element.textContent = '';
+            
+            const type = () => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 150);
+                }
+            };
+            setTimeout(type, 500);
+        }
+
+        // ==================== MOBILE MENU ====================
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // ==================== NAVIGATION ====================
+        function goTo(page) {
+            // في الإنتاج، هذا سينتقل للصفحة الفعلية
+            // الآن نعرض رسالة توضيحية
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 glass px-6 py-3 rounded-2xl text-white text-sm z-50 animate-bounce';
+            toast.innerHTML = `<i class="fas fa-external-link-alt mr-2 text-brand-400"></i>سيتم فتح: ${page}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+            
+            // Uncomment for production:
+            // window.location.href = page;
+        }
+
+        // ==================== QUIZ SYSTEM ====================
+        function startQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            quizStarted = true;
+            
+            document.getElementById('quizStart').classList.add('hidden');
+            document.getElementById('quizQuestion').classList.remove('hidden');
+            document.getElementById('quizResult').classList.add('hidden');
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = quizQuestions[currentQuestion];
+            
+            document.getElementById('qCurrent').textContent = currentQuestion + 1;
+            document.getElementById('qTotal').textContent = quizQuestions.length;
+            document.getElementById('qScore').textContent = score;
+            document.getElementById('qProgress').style.width = ((currentQuestion + 1) / quizQuestions.length * 100) + '%';
+            document.getElementById('qText').textContent = q.question;
+            
+            const optionsDiv = document.getElementById('qOptions');
+            optionsDiv.innerHTML = '';
+            
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('div');
+                btn.className = 'quiz-option glass rounded-xl p-4 border border-slate-600 text-white cursor-pointer flex items-center gap-3';
+                btn.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-sm font-bold">${String.fromCharCode(65 + idx)}</div>
+                    <span>${opt}</span>
+                `;
+                btn.onclick = () => selectAnswer(idx, btn);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(selectedIndex, element) {
+            const q = quizQuestions[currentQuestion];
+            const options = document.querySelectorAll('.quiz-option');
+            
+            // Disable all options
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+            
+            // Show correct/wrong
+            if (selectedIndex === q.correct) {
+                element.classList.add('correct');
+                score++;
+                document.getElementById('qScore').textContent = score;
+            } else {
+                element.classList.add('wrong');
+                options[q.correct].classList.add('correct');
+            }
+            
+            // Next question or result
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < quizQuestions.length) {
+                    showQuestion();
+                } else {
+                    showResult();
+                }
+            }, 1500);
+        }
+
+        function showResult() {
+            document.getElementById('quizQuestion').classList.add('hidden');
+            document.getElementById('quizResult').classList.remove('hidden');
+            
+            const percentage = (score / quizQuestions.length) * 100;
+            const resultIcon = document.getElementById('resultIcon');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultMessage = document.getElementById('resultMessage');
+            const namesReveal = document.getElementById('namesReveal');
+            
+            // Set names
+            document.getElementById('hiddenName1').textContent = HIDDEN_NAME_1;
+            document.getElementById('hiddenName2').textContent = HIDDEN_NAME_2;
+            document.getElementById('modalName1').textContent = HIDDEN_NAME_1;
+            document.getElementById('modalName2').textContent = HIDDEN_NAME_2;
+            
+            if (score >= 4) {
+                // Success - reveal names
+                resultIcon.className = 'w-24 h-24 bg-gradient-to-br from-gold-400 to-gold-600 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl shadow-xl shadow-gold-500/30';
+                resultIcon.innerHTML = '<i class="fas fa-crown text-white"></i>';
+                resultTitle.textContent = '🎉 مبروك! اكتشفت السر';
+                resultTitle.className = 'text-3xl font-bold text-gold-400 mb-3';
+                resultMessage.innerHTML = `أجبت على <span class="text-gold-400 font-bold">${score}</span> من <span class="text-white font-bold">5</span> أسئلة بشكل صحيح!<br>الآن يمكنك رؤية سر الموقع:`;
+                namesReveal.classList.remove('hidden');
+            } else if (score >= 2) {
+                // Partial
+                resultIcon.className = 'w-24 h-24 bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl shadow-xl shadow-brand-500/30';
+                resultIcon.innerHTML = '<i class="fas fa-star text-white"></i>';
+                resultTitle.textContent = 'جيد! لكن حاول مرة أخرى';
+                resultTitle.className = 'text-3xl font-bold text-brand-400 mb-3';
+                resultMessage.innerHTML = `أجبت على <span class="text-brand-400 font-bold">${score}</span> من <span class="text-white font-bold">5</span> أسئلة.<br>تحتاج إلى 4 إجابات صحيحة على الأقل لكشف السر!`;
+                namesReveal.classList.add('hidden');
+            } else {
+                // Fail
+                resultIcon.className = 'w-24 h-24 bg-gradient-to-br from-slate-500 to-slate-700 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl';
+                resultIcon.innerHTML = '<i class="fas fa-book-open text-white"></i>';
+                resultTitle.textContent = 'حاول مرة أخرى!';
+                resultTitle.className = 'text-3xl font-bold text-slate-400 mb-3';
+                resultMessage.innerHTML = `أجبت على <span class="text-slate-400 font-bold">${score}</span> من <span class="text-white font-bold">5</span> أسئلة.<br>راجع تاريخ الجزائر وحاول مجدداً!`;
+                namesReveal.classList.add('hidden');
+            }
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+
+        // ==================== EASTER EGGS ====================
+        function setupEasterEggs() {
+            // Easter Egg 1: Konami Code
+            le
